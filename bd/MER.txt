@@ -1,0 +1,9 @@
+MER:
+Usuário
+Atributos: CPF, Nome, E-mail, Telefone, Endereço, Data_nascimento, Senha
+Item
+Atributos: ID_item, Nome_item, Descrição, Estado_uso, Foto, Categoria, ID_usuario (FK)
+Doação
+Atributos: ID_doacao, Data_doacao, ID_item (FK), ID_usuario_doador (FK), ID_usuario_receptor (FK)
+Interesse
+Atributos: ID_interesse, ID_item (FK), ID_usuario (FK), Data_interesse

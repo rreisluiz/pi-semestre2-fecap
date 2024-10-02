@@ -1,0 +1,6 @@
+Banco de Dados: MySQL
+Justificativa de Escolha
+Optamos por MySQL devido ao seu bom desempenho, fácil integração com Node.js e JavaScript, além de ser uma solução gratuita e amplamente utilizada no mercado.
+
+Ferramentas Utilizadas
+MySQL Workbench: Para design, modelagem e administração do banco de dados.
