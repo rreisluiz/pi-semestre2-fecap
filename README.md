@@ -92,6 +92,9 @@ npm start
 
 ## 🎓 Referências
 
+### Design Figma
+https://www.figma.com/design/5B2MPdSljOn4wQhwOTDBTz/G6-PI2-RepassEco?node-id=0-1&t=hmhTnrZOIGVJcRbu-1
+
 Aqui estão as referências usadas no projeto.
 
 1. https://www.freecycle.org/#:~:text=Welcome%20to%20The%20Freecycle%20Network%E2%84%A2!%20We%20are%20a
