@@ -15,7 +15,7 @@
 ## Descrição
 
 <p align="center">
-<img src="https://pix4free.org/assets/library/2021-01-20/originals/game.jpg" alt="RepassEco" border="0">
+<img src="https://github.com/2024-2-NCC2/Projeto6/blob/main/imagens/pagina-home-2.jpeg" alt="RepassEco" border="0">
   Site by <a>Gabriel Carvalho Mota, Vitoria Leticia, Guilherme Siqueira, Rodrigo Reis</a>
 </p>
 
