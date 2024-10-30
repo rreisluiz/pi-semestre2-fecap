@@ -9,7 +9,8 @@ function App() {
         <Routes>
           <Route path='/' element={<Home/>} />
           <Route path='/sobre-nos' element={<SobreNos/>} />
-
+          <Route path='/loginpage' element={<LoginPage />} />
+          <Route path='/create-account' element={<CreateAccountPage />} /> {/* Nova rota para CreateAccountPage */}
         </Routes>
       </Router>
     </div>

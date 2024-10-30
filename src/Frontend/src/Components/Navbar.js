@@ -167,9 +167,9 @@ function NavBar() {
         <MenuItem to="/sobre-nos">Sobre Nós</MenuItem>
         
         <Spacer /> 
-        <ButtonStyled>Login</ButtonStyled>
+        <ButtonStyled as={Link} to="/loginpage">Login</ButtonStyled>
         <BtnCadastrar>
-          <TextWrapper>Cadastrar</TextWrapper>
+          <TextWrapper as={Link} to="/create-account">Cadastrar</TextWrapper>
         </BtnCadastrar>
       </MenuContainer>
     </NavbarContainer>
