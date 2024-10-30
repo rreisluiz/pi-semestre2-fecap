@@ -14,7 +14,6 @@ Nosso objetivo é criar um ambiente transformador, onde pequenas atitudes result
 
 # MER
 
-MER:  
 Usuário  
 Atributos: CPF, Nome, E-mail, Telefone, Endereço, Data_nascimento, Senha  
 Item  
@@ -26,9 +25,9 @@ Atributos: ID_interesse, ID_item (FK), ID_usuario (FK), Data_interesse
 
 # Banco de Dados - RepassEco
 
-**Descrição das Tabelas Implementadas**
-
-**Tabela usuario**
+**Descrição das Tabelas Implementadas**  
+  
+**Tabela usuario**  
 Descrição: Contém informações dos usuários cadastrados no nosso site RepassEco.  
 Estrutura:  
 CPF (char(11)): Identificador único do usuário, é chave primária.  
@@ -43,8 +42,8 @@ uf (char(2)): Unidade federativa (opcional).
 cidade (varchar(50)): Cidade do usuário (opcional).  
 estado (varchar(50)): Estado do endereço (opcional).  
 telefone (varchar(20)): Número de telefone do usuário (opcional).  
-
-**Tabela item**
+  
+**Tabela item**  
 Descrição: Armazena informações sobre os itens disponíveis para doação ou repasse.  
 Estrutura:  
 id_item (int): Identificador único do item, chave primária, com incremento automático.  
