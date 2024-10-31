@@ -162,7 +162,7 @@ function NavBar() {
         <Spacer /> 
         <MenuItem to="/produto">Produto</MenuItem>
         <Spacer /> 
-        <MenuItem to="/mapa">Mapa</MenuItem>
+        <MenuItem to="/pontos-coleta">Pontos de Coleta</MenuItem>
         <Spacer /> 
         <MenuItem to="/sobre-nos">Sobre Nós</MenuItem>
         
