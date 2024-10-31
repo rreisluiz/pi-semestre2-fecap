@@ -93,7 +93,10 @@ npm start
 ## 🎓 Referências
 
 ### Design Figma
-https://www.figma.com/design/5B2MPdSljOn4wQhwOTDBTz/G6-PI2-RepassEco?node-id=0-1&t=hmhTnrZOIGVJcRbu-1
+https://www.figma.com/design/5B2MPdSljOn4wQhwOTDBTz/G6-PI2-RepassEco?node-id=0-1&t=hmhTnrZOIGVJcRbu-1  
+  
+## README - Banco de Dados  
+https://github.com/2024-2-NCC2/Projeto6/blob/main/bd/README.md
 
 Aqui estão as referências usadas no projeto.
 
