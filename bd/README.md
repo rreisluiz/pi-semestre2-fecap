@@ -14,12 +14,42 @@ Nosso objetivo é criar um ambiente transformador, onde pequenas atitudes result
 
 # MER
 
-MER:
-Usuário
-Atributos: CPF, Nome, E-mail, Telefone, Endereço, Data_nascimento, Senha
-Item
-Atributos: ID_item, Nome_item, Descrição, Estado_uso, Foto, Categoria, ID_usuario (FK)
-Doação
-Atributos: ID_doacao, Data_doacao, ID_item (FK), ID_usuario_doador (FK), ID_usuario_receptor (FK)
-Interesse
-Atributos: ID_interesse, ID_item (FK), ID_usuario (FK), Data_interesse
+Usuário  
+Atributos: CPF, Nome, E-mail, Telefone, Endereço, Data_nascimento, Senha  
+Item  
+Atributos: ID_item, Nome_item, Descrição, Estado_uso, Foto, Categoria, ID_usuario (FK)  
+Doação  
+Atributos: ID_doacao, Data_doacao, ID_item (FK), ID_usuario_doador (FK), ID_usuario_receptor (FK)  
+Interesse  
+Atributos: ID_interesse, ID_item (FK), ID_usuario (FK), Data_interesse  
+
+# Banco de Dados - RepassEco
+
+**Descrição das Tabelas Implementadas**  
+  
+**Tabela usuario**  
+Descrição: Contém informações dos usuários cadastrados no nosso site RepassEco.  
+Estrutura:  
+CPF (char(11)): Identificador único do usuário, é chave primária.  
+nome_usuario (varchar(100)): Nome completo do usuário.  
+email_usuario (varchar(100)): Endereço de e-mail do usuário.  
+senha_usuario (varchar(100)): Senha do usuário.  
+data_nascimento_usuario (date): Data de nascimento do usuário.  
+logradouro (varchar(200)): Endereço do usuário (opcional).  
+complemento (varchar(50)): Complemento do endereço (opcional).  
+bairro (varchar(150)): Bairro do endereço do usuário (opcional).  
+uf (char(2)): Unidade federativa (opcional).  
+cidade (varchar(50)): Cidade do usuário (opcional).  
+estado (varchar(50)): Estado do endereço (opcional).  
+telefone (varchar(20)): Número de telefone do usuário (opcional).  
+  
+**Tabela item**  
+Descrição: Armazena informações sobre os itens disponíveis para doação ou repasse.  
+Estrutura:  
+id_item (int): Identificador único do item, chave primária, com incremento automático.  
+foto_item (varchar(250)): URL da imagem do item.  
+descricao_item (varchar(5000)): Descrição detalhada do item.  
+nome_item (varchar(200)): Nome do item.  
+categoria_item (varchar(100)): Categoria do item (ex.: eletrônico, móvel, etc.).  
+estado_uso_item (varchar(100)): Condição de uso do item.  
+CPF (char(11)): Chave estrangeira referenciando o CPF do doador na tabela usuario.  
