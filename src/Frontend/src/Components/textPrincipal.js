@@ -1,6 +1,7 @@
 import React from "react";
-import imgFunco from '../assets/img-fundo.png';
+import imgFundo from '../assets/img-fundo.png';
 import styled from "styled-components";
+import { Link } from 'react-router-dom';
 
 const StyledBox = styled.div`
   height: 605px;
@@ -12,7 +13,7 @@ const StyledBox = styled.div`
     width: 100%; 
   }
 
-  .img-funco {
+  .img-fundo {
     height: 681px;
     object-fit: cover; 
     position: absolute;
@@ -74,7 +75,7 @@ const StyledBox = styled.div`
   }
 `;
 
-const ButtonStyled = styled.button`
+const ButtonStyled = styled(Link)`
   display: flex; 
   align-items: center; 
   justify-content: center; 
@@ -109,7 +110,7 @@ export const Box = () => {
     <StyledBox className="box">
       <div className="texto-principal">
         <div className="overlap-group">
-          <img className="img-funco" alt="Img funco" src={imgFunco} />
+          <img className="img-fundo" alt="Img fundo" src={imgFundo} />
           <p className="div">Transformando o Consumo, Preservando o Futuro</p>
           <p className="p">
             Cada escolha faz diferença. Nosso site nasceu para promover o consumo
@@ -117,12 +118,13 @@ export const Box = () => {
             vez de descartar, que tal compartilhar com quem pode aproveitar? Estamos aqui
             para facilitar essas trocas e contribuir para um mundo mais sustentável.
           </p>
-          <ButtonStyled className="pontos-de-coleta">Pontos de Coleta</ButtonStyled>
-          <ButtonStyled className="mapa-de-coleta">Explorar Item</ButtonStyled>
+          <ButtonStyled className="pontos-de-coleta" to="/pontos-coleta">Pontos de Coleta</ButtonStyled>
+          <ButtonStyled className="mapa-de-coleta" to="/explorar_itens">Explorar Item</ButtonStyled>
         </div>
       </div>
     </StyledBox>
   );
 };
+
 
 export default Box;

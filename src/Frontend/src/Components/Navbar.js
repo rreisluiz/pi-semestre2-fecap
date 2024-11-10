@@ -23,7 +23,7 @@ const NavbarContainer = styled.div`
   }
 `;
 
-const Logo = styled.div`
+const Logo = styled(Link)`
   background-color: #2c5431;
   height: 158px;
   width: 164px;
@@ -54,11 +54,11 @@ const MenuContainer = styled.div`
 `;
 
 const MenuItem = styled(Link)`
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
-  height: 25px;
+  height: 40px;
   padding: 8px 16px;
   font-size: 14px;
   color: #002c20;
@@ -100,6 +100,7 @@ const ButtonStyled = styled.button`
   margin-left: 10px;
   transition: background-color 0.3s ease, color 0.3s ease;
   font-weight: bold;
+  text-decoration: none;
 
   @media (max-width: 768px) {
     margin-left: 0;
@@ -144,6 +145,7 @@ const TextWrapper = styled.div`
   line-height: 14px;
   text-align: center;
   width: 72px;
+  text-decoration: none;
 
   ${BtnCadastrar}:hover & {
     color: white;
@@ -153,14 +155,14 @@ const TextWrapper = styled.div`
 function NavBar() {
   return (
     <NavbarContainer>
-      <Logo>
+      <Logo to="/">
         <RDImage className="RD-sem-fundo" alt="Rd sem fundo" src={RDSemFundo1} />
       </Logo>
 
       <MenuContainer>
         <MenuItem to="/">Home</MenuItem>
         <Spacer /> 
-        <MenuItem to="/produto">Produto</MenuItem>
+        <MenuItem to="/explorar_itens">Produto</MenuItem>
         <Spacer /> 
         <MenuItem to="/pontos-coleta">Pontos de Coleta</MenuItem>
         <Spacer /> 
