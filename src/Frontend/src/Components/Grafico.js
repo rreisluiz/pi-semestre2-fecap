@@ -4,14 +4,14 @@ import Pizza from '../assets/Pizza.png';
 import styled from "styled-components";
 
 const StyledGraphicBox = styled.div`
-  width: 100%; 
-  padding: 20px; 
+  width: 100%;
+  padding: 20px;
   box-sizing: border-box;
-  margin-top: 140px; 
+  margin-top: 140px;
 
   .container {
     display: flex;
-    justify-content: space-between; 
+    justify-content: space-between;
     align-items: flex-start;
     width: 100%;
     margin-bottom: 0;
@@ -19,25 +19,18 @@ const StyledGraphicBox = styled.div`
 
   .grafico-item {
     flex: 1;
-    text-align: center; 
-    margin: 0 20px; 
+    text-align: center;
+    margin: 0 20px;
     position: relative;
-   
   }
 
-  .graficoBarra {
+  .graficoBarra,
+  .graficoPizza {
     width: 100%;
     height: auto;
-    max-width: 600px; 
-    z-index: 1; 
-    position: relative; 
-  }
-  .graficoBPizza {
-    width: 100%;
-    height: auto;
-    max-width: 800px; 
-    z-index: 1; 
-    position: relative; 
+    max-width: 700px; /* Ajuste para manter os gráficos do mesmo tamanho */
+    z-index: 1;
+    position: relative;
   }
 
   .descricaoBarra {
@@ -45,19 +38,18 @@ const StyledGraphicBox = styled.div`
     font-size: 16px;
     line-height: 24px;
     max-width: 1000px;
-    margin: 0 auto; 
-    margin-top: 40px; 
+    margin: 0 auto;
+    margin-top: 40px;
   }
 
-    .descricaoPizza {
+  .descricaoPizza {
     text-align: justify;
     font-size: 16px;
     line-height: 24px;
     max-width: 1000px;
-    margin: 0 auto; 
-    margin-top: 50px;
-    }
-  
+    margin: 0 auto;
+    margin-top: 92px;
+  }
 `;
 
 export const GraphicBox = () => {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import IconInstagram from '../assets/instagram.png';
 import IconLinkedin from '../assets/linkedin.png';
@@ -45,7 +45,6 @@ const FooterContainer = styled.div`
     h5 {
       margin-bottom: 10px;
       font-weight: bold;
-      
     }
 
     a {
@@ -92,6 +91,7 @@ const FooterContainer = styled.div`
       span {
         margin-bottom: 20px;
         text-decoration: underline; 
+        cursor: pointer;
       }
     }
   }
@@ -106,36 +106,91 @@ const FooterContainer = styled.div`
   }
 `;
 
+const BackToTopButton = styled.button`
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #B88162;
+  color: #ffffff;
+  border: none;
+  border-radius: 50%;
+  width: 60px;  
+  height: 60px; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+
+  &:hover {
+    opacity: 1;
+    transform: scale(1.1); 
+  }
+`;
+
+
 const Footer = () => {
+  const [showButton, setShowButton] = useState(false);
+
+  
+  const scrollToTop = () => {
+    const c = document.documentElement.scrollTop || document.body.scrollTop;
+    if (c > 0) {
+      window.requestAnimationFrame(scrollToTop);
+      window.scrollTo(0, c - c / 10); 
+    }
+  };
+
+  
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 300) {
+        setShowButton(true);
+      } else {
+        setShowButton(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <FooterContainer>
-      <div className="logo-container">
-        <div className="logo">
-          <img src={Logo} alt="Logo RD Brasil" /> 
+    <>
+      <FooterContainer>
+        <div className="logo-container">
+          <div className="logo">
+            <img src={Logo} alt="Logo RD Brasil" /> 
+          </div>
+          <div className="column">
+            <h5>Política de privacidade e termos de uso</h5>
+            <h5>Meio de contato</h5>
+            <a href="mailto:RD.Brasil@gmail.com">RD.Brasil@gmail.com</a>
+            <h5>Suporte</h5>
+            <h5>Endereço</h5>
+            <p>Av. da Liberdade, 532 - Liberdade, São Paulo - SP 01502-001</p>
+          </div>
         </div>
-        <div className="column">
-          <h5>Política de privacidade e termos de uso</h5>
-          <h5>Meio de contato</h5>
-          <a href="mailto:RD.Brasil@gmail.com">RD.Brasil@gmail.com</a>
-          <h5>Suporte</h5>
-          <h5>Endereço</h5>
-          <p>Av. da Liberdade, 532 - Liberdade, São Paulo - SP 01502-001</p>
+        <div className="social-media">
+          <h5>SIGA-NOS</h5>
+          <div className="footer-icons">
+            <img src={IconInstagram} alt="Instagram" />
+            <img src={IconLinkedin} alt="LinkedIn" />
+            <img src={IconGithub} alt="GitHub" />
+          </div>
+          <div className="feedback-container">
+            <span href="#">Deixe seu feedback</span>
+            <span onClick={scrollToTop}>Voltar ao topo</span>
+          </div>
         </div>
-      </div>
-      <div className="social-media">
-        <h5>SIGA-NOS</h5>
-        <div className="footer-icons">
-          <img src={IconInstagram} alt="Instagram" />
-          <img src={IconLinkedin} alt="LinkedIn" />
-          <img src={IconGithub} alt="GitHub" />
-        </div>
-        <div className="feedback-container">
-          <span href="#">Deixe seu feedback</span>
-          <span href="#">Voltar ao topo</span>
-        </div>
-      </div>
-      <div className="footer-bottom">© 2024 RD Brasil.</div>
-    </FooterContainer>
+        <div className="footer-bottom">© 2024 RD Brasil.</div>
+      </FooterContainer>
+      {showButton && (
+        <BackToTopButton onClick={scrollToTop}>↑</BackToTopButton>
+      )}
+    </>
   );
 };
 

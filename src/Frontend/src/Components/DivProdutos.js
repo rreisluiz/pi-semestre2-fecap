@@ -61,7 +61,7 @@ const Button = styled.button`
 `;
 
 
-function DivProduto({ images }) {
+function DivProdutos({ images }) {
   const navigate = useNavigate(); // Usando o hook de navegação
 
   const [activeImageIndex, setActiveImageIndex] = useState(0); // Estado para controlar a imagem ativa
@@ -116,10 +116,11 @@ function DivProduto({ images }) {
           </div>
           <Text>{product.text}</Text>
           <Button onClick={() => navigate(`/item/${product.id}`)}>Saiba Mais</Button> {/* Navegação para a página do produto */}
+
         </ImageContainer>
       ))}
     </Container>
   );
 }
 
-export default DivProduto;
+export default DivProdutos;

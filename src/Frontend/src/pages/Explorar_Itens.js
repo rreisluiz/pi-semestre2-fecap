@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from "../Components/Navbar";
 import Footer from '../Components/Footer';
-import DivProduto from '../Components/DivProduto';
+import DivProdutos from '../Components/DivProdutos';
 
 
 function Explorar_Itens() {
@@ -107,7 +107,7 @@ function Explorar_Itens() {
   return (
     <div>
       <Navbar />
-      <DivProduto images={updatedProducts} />
+      <DivProdutos images={updatedProducts} />
       <Footer />
     </div>
   );
