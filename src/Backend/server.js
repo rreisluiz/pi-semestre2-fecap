@@ -15,13 +15,13 @@ app.use(cors({
 }));
 
 // Conexão com o banco de dados MySQL
-const db = mysql.createConnection({
-    host: 'localhost', // Host do banco de dados
-    user: 'root', // Usuário do MySQL (substitua conforme seu ambiente)
-    password: '', // Senha do MySQL (substitua conforme seu ambiente)
-    database: 'repasseco', // Nome do banco de dados
-    port: 3308
-});
+// const db = mysql.createConnection({
+//     host: 'localhost', // Host do banco de dados
+//     user: 'root', // Usuário do MySQL (substitua conforme seu ambiente)
+//     password: '', // Senha do MySQL (substitua conforme seu ambiente)
+//     database: 'repasseco', // Nome do banco de dados
+//     port: 3308
+// });
 
 // Conectar ao banco de dados
 db.connect((err) => {
