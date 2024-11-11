@@ -1,36 +1,47 @@
-import React, { useState } from "react"; // Importando useState
+import React, { useState } from "react";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom"; // Importando useNavigate
-import axios from "axios"; // Importando axios para fazer requisições
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const LoginForm = () => {
-  const navigate = useNavigate(); // Usando useNavigate
-  const [email, setEmail] = useState(""); // Estado para email
-  const [password, setPassword] = useState(""); // Estado para senha
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(""); // Estado para erro
 
   const handleRegisterClick = () => {
-    navigate("/create-account"); // Redirecionando para a tela de criar conta
+    navigate("/create-account");
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Previne o comportamento padrão do formulário
+    e.preventDefault();
+    setError(""); // Limpa o erro anterior
 
     try {
-      const response = await axios.post("http://localhost:3083/users/login", {
-        email_usuario: email, // Enviando email
-        senha_usuario: password, // Enviando senha
+      const response = await axios.post("http://localhost:5000/users/login", {
+        email_usuario: email,
+        senha_usuario: password,
       });
-      alert(response.data); // Mensagem de sucesso do backend
-      navigate("/nextPage"); // Substitua "/nextPage" pela rota da próxima página
+
+      alert(response.data.message); // Exibe a mensagem de sucesso do backend
+      navigate("/nextPage");
     } catch (error) {
       console.error("Erro ao realizar login:", error);
-      alert("Email ou senha incorretos."); // Mensagem de erro
+
+      // Verifica o erro retornado pelo backend e exibe a mensagem correspondente
+      if (error.response) {
+        // Se a resposta da API for válida (erro com status HTTP)
+        setError(error.response.data.message); // Atualiza o estado de erro com a mensagem do backend
+      } else {
+        // Caso não haja resposta, mostra um erro genérico
+        setError("Erro ao realizar o login. Tente novamente.");
+      }
     }
   };
 
   return (
     <FormWrapper>
-      <form onSubmit={handleSubmit}> {/* Adicionando a função de submit */}
+      <form onSubmit={handleSubmit}>
         <FormContent>
           <FormField>
             <Label htmlFor="email">Email</Label>
@@ -40,8 +51,8 @@ const LoginForm = () => {
               placeholder="Email:"
               aria-label="Email"
               required
-              value={email} // Atribuindo valor do estado
-              onChange={(e) => setEmail(e.target.value)} // Atualizando estado no change
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </FormField>
 
@@ -53,10 +64,13 @@ const LoginForm = () => {
               placeholder="Senha:"
               aria-label="Senha"
               required
-              value={password} // Atribuindo valor do estado
-              onChange={(e) => setPassword(e.target.value)} // Atualizando estado no change
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
           </FormField>
+
+          {/* Exibindo a mensagem de erro se houver */}
+          {error && <ErrorMessage>{error}</ErrorMessage>}
 
           <ButtonGroup>
             <RegisterButton type="button" onClick={handleRegisterClick}>
@@ -144,6 +158,14 @@ const RegisterButton = styled(ButtonBase)`
 const LoginButton = styled(ButtonBase)`
   background-color: transparent;
   border: 1px solid #fff;
+`;
+
+// Estilo para a mensagem de erro
+const ErrorMessage = styled.div`
+  color: red;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 10px;
 `;
 
 export default LoginForm;
