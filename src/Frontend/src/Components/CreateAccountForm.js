@@ -21,17 +21,23 @@ const CreateAccountForm = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Evita o envio padrão do formulário
+
     try {
-        const response = await axios.post("http://localhost:3083/users/add", formData);
-        alert(response.data); // Mensagem de sucesso do backend
-        navigate("/loginpage"); // Redireciona para a página de login após o cadastro
+        // Envia a requisição POST para o backend com os dados do formulário
+        const response = await axios.post("http://localhost:5000/users/add", formData);
+        
+        // Verifica o que foi retornado pelo backend e exibe a mensagem de sucesso
+        alert(response.data.message); // Exibe a mensagem de sucesso do backend
+
+        // Navega para a página de login após o cadastro bem-sucedido
+        navigate("/loginpage");
+
     } catch (error) {
         console.error("Erro ao cadastrar usuário:", error);
         alert("Erro ao cadastrar o usuário. Tente novamente.");
     }
 };
-
 
   return (
     <FormWrapper>

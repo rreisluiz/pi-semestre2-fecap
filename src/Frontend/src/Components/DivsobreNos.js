@@ -1,6 +1,7 @@
 import React from "react";
 import background from '../assets/pexels-singkham-178541-1108572-1.png';
 import styled from "styled-components";
+import { Link } from 'react-router-dom';
 
 const StyledBox = styled.div`
   height: auto; 
@@ -63,7 +64,8 @@ const StyledBox = styled.div`
   }
 `;
 
-const ButtonStyled = styled.button` 
+const ButtonStyled = styled(Link)` 
+text-decoration:none;
   display: flex; 
   align-items: center; 
   justify-content: center; 
@@ -93,10 +95,6 @@ const ButtonStyled = styled.button`
   }
 `;
 
-
-
-
-
 export const DivsobreNos = () => {
   return (
     <StyledBox>
@@ -107,7 +105,7 @@ export const DivsobreNos = () => {
           Acreditamos que pequenas atitudes podem gerar grandes transformações! Nosso site existe para dar uma nova chance a produtos que ainda têm muito a oferecer, conectando pessoas que valorizam o reaproveitamento e o consumo consciente. Cada item trocado aqui é um passo a mais para preservar o meio ambiente e cuidar do nosso planeta. Além disso, ajudamos você a encontrar pontos de coleta para o descarte responsável, garantindo que juntos estamos fazendo nossa parte pelos Objetivos de Desenvolvimento Sustentável (ODS 12 e 15). Seja parte dessa mudança. Juntos, podemos transformar o mundo em um lugar mais sustentável!
         </p>
         <div className="mais-detalhes">
-          <ButtonStyled>Mais detalhes</ButtonStyled>
+          <ButtonStyled to= "/sobre-nos" >Mais detalhes</ButtonStyled>
         </div>
       </div>
     </StyledBox>
