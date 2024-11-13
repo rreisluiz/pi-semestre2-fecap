@@ -1,34 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 const Container = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3 colunas */
+  grid-template-columns: repeat(3, 1fr);
   gap: 20px;
-  margin: 70px; /* Margem de 70px */
+  margin: 70px;
   padding-bottom: 20px;
 `;
 
 const ImageContainer = styled.div`
-  width: 100%; /* Ocupa toda a largura da célula */
+  width: 100%;
   height: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 10px; /* Ajuste de padding para controle do espaçamento */
+  padding: 10px;
   border-radius: 8px;
   background-color: #f9f9f9;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 `;
 
 const Text = styled.p`
-  text-align: center;
+  text-align: left;  /* Alinha o texto à esquerda */
   margin: 10px 0;
-  font-size: 1rem; /* Reduzindo o tamanho da fonte */
+  font-size: 1rem;
+  width: 100%;  /* Garante que o texto ocupe toda a largura do container */
 `;
 
 const Button = styled.button`
@@ -60,38 +59,64 @@ const Button = styled.button`
   }
 `;
 
+const Trail = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+`;
+
+const TrailDot = styled.div`
+  width: 10px;
+  height: 10px;
+  margin: 0 5px;
+  border-radius: 50%;
+  background-color: ${props => (props.active ? '#2c5431' : '#ccc')};
+  transition: background-color 0.3s ease;
+`;
 
 function DivProdutos({ images }) {
-  const navigate = useNavigate(); // Usando o hook de navegação
+  const navigate = useNavigate();
 
-  const [activeImageIndex, setActiveImageIndex] = useState(0); // Estado para controlar a imagem ativa
+  const [activeImageIndexes, setActiveImageIndexes] = useState(
+    images.map(() => 0)
+  );
 
-  // Função para alternar a imagem automaticamente a cada 3 segundos para o produto com id 1
   useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveImageIndex((prevIndex) => (prevIndex + 1) % images[0].images.length); // Alterna a imagem
-    }, 3000); // Intervalo de 3 segundos
+    const intervals = images.map((_, productIndex) =>
+      setInterval(() => {
+        setActiveImageIndexes((prevIndexes) => {
+          const newIndexes = [...prevIndexes];
+          newIndexes[productIndex] =
+            (newIndexes[productIndex] + 1) % images[productIndex].images.length;
+          return newIndexes;
+        });
+      }, 3000)
+    );
 
-    // Limpar o intervalo quando o componente for desmontado
-    return () => clearInterval(interval);
+    return () => intervals.forEach(clearInterval);
   }, [images]);
-
-
 
   return (
     <Container>
-      {images.map((product, index) => (
-        <ImageContainer key={index}>
-          {/* Carrossel dentro do ImageContainer */}
-          <div id={`carousel${product.id}`} className="carousel slide" data-bs-ride="false">
+      {images.map((product, productIndex) => (
+        <ImageContainer key={productIndex}>
+          <div
+            id={`carousel${product.id}`}
+            className="carousel slide"
+            data-bs-ride="false"
+          >
             <div className="carousel-inner">
-              {/* Mapeia as imagens do produto para criar os itens do carrossel */}
               {product.images.map((image, imgIndex) => (
                 <div
-                  className={`carousel-item ${imgIndex === activeImageIndex ? 'active' : ''}`} // Imagem ativa
+                  className={`carousel-item ${imgIndex === activeImageIndexes[productIndex] ? 'active' : ''}`}
                   key={imgIndex}
                 >
-                  <img src={image.src} className="d-block w-100" alt={image.alt} />
+                  <img
+                    src={image}
+                    className="d-block w-100"
+                    alt={`Produto ${product.id} - Imagem ${imgIndex + 1}`}
+                    style={{ borderRadius: '20px' }}
+                  />
                 </div>
               ))}
             </div>
@@ -100,6 +125,15 @@ function DivProdutos({ images }) {
               type="button"
               data-bs-target={`#carousel${product.id}`}
               data-bs-slide="prev"
+              onClick={() =>
+                setActiveImageIndexes((prevIndexes) => {
+                  const newIndexes = [...prevIndexes];
+                  newIndexes[productIndex] =
+                    (newIndexes[productIndex] - 1 + product.images.length) %
+                    product.images.length;
+                  return newIndexes;
+                })
+              }
             >
               <span className="carousel-control-prev-icon" aria-hidden="true"></span>
               <span className="visually-hidden">Previous</span>
@@ -109,14 +143,33 @@ function DivProdutos({ images }) {
               type="button"
               data-bs-target={`#carousel${product.id}`}
               data-bs-slide="next"
+              onClick={() =>
+                setActiveImageIndexes((prevIndexes) => {
+                  const newIndexes = [...prevIndexes];
+                  newIndexes[productIndex] =
+                    (newIndexes[productIndex] + 1) % product.images.length;
+                  return newIndexes;
+                })
+              }
             >
               <span className="carousel-control-next-icon" aria-hidden="true"></span>
               <span className="visually-hidden">Next</span>
             </button>
           </div>
-          <Text>{product.text}</Text>
-          <Button onClick={() => navigate(`/item/${product.id}`)}>Saiba Mais</Button> {/* Navegação para a página do produto */}
 
+          {/* Trilha de bolinhas */}
+          <Trail>
+            {product.images.map((_, imgIndex) => (
+              <TrailDot key={imgIndex} active={imgIndex === activeImageIndexes[productIndex]} />
+            ))}
+          </Trail>
+
+          {/* Exibindo o nome do produto */}
+          <Text>{product.title}</Text>
+
+          <Button onClick={() => navigate(`/item/${product.id}`)}>
+            Saiba Mais
+          </Button>
         </ImageContainer>
       ))}
     </Container>

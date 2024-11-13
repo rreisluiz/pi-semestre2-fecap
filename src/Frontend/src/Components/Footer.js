@@ -106,35 +106,62 @@ const FooterContainer = styled.div`
   }
 `;
 
-const BackToTopButton = styled.button`
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background-color: #B88162;
-  color: #ffffff;
-  border: none;
+const Button = styled.button`
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
-  width: 60px;  
-  height: 60px; 
+  background-color: #B88162;
+  border: none;
+  font-weight: 600;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 30px;
   cursor: pointer;
-  opacity: 0.7;
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition-duration: 0.3s;
+  overflow: hidden;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+
+  .svgIcon {
+    width: 12px;
+    transition-duration: 0.3s;
+  }
+
+  .svgIcon path {
+    fill: white;
+  }
 
   &:hover {
+    width: 140px;
+    border-radius: 50px;
+    background-color: #B88162;
+  }
+
+  &:hover .svgIcon {
+    transform: translateY(-200%);
+  }
+
+  &::before {
+    position: absolute;
+    bottom: -20px;
+    content: "Voltar ao topo";
+    color: white;
+    font-size: 0px;
+    transition-duration: 0.3s;
+  }
+
+  &:hover::before {
+    font-size: 13px;
     opacity: 1;
-    transform: scale(1.1); 
+    bottom: unset;
   }
 `;
-
 
 const Footer = () => {
   const [showButton, setShowButton] = useState(false);
 
-  
   const scrollToTop = () => {
     const c = document.documentElement.scrollTop || document.body.scrollTop;
     if (c > 0) {
@@ -143,7 +170,6 @@ const Footer = () => {
     }
   };
 
-  
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 300) {
@@ -188,7 +214,13 @@ const Footer = () => {
         <div className="footer-bottom">© 2024 RD Brasil.</div>
       </FooterContainer>
       {showButton && (
-        <BackToTopButton onClick={scrollToTop}>↑</BackToTopButton>
+        <Button onClick={scrollToTop}>
+          <svg className="svgIcon" viewBox="0 0 384 512">
+            <path
+              d="M214.6 41.4c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 141.2V448c0 17.7 14.3 32 32 32s32-14.3 32-32V141.2L329.4 246.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-160-160z"
+            ></path>
+          </svg>
+        </Button>
       )}
     </>
   );

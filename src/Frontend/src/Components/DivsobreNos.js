@@ -65,6 +65,7 @@ const StyledBox = styled.div`
 `;
 
 const ButtonStyled = styled(Link)` 
+text-decoration:none;
   display: flex; 
   align-items: center; 
   justify-content: center; 

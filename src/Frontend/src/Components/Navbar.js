@@ -214,7 +214,7 @@ function NavBar() {
 
       <MenuContainer>
         {/* Componente de Pesquisa */}
-        <SearchWrapper>
+        <SearchWrapper per>
           <SearchInput type="text" placeholder="Pesquisar" />
           <SearchButton>
             <SearchIcon aria-hidden="true" viewBox="0 0 24 24">
