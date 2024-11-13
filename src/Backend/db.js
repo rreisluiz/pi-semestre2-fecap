@@ -18,6 +18,7 @@ async function testConnection() {
         console.error('Erro ao conectar na Base de Dados:', error);
     }
 }
+
 testConnection();
 
 module.exports = pool;

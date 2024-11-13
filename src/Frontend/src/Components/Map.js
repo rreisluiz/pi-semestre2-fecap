@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import React, { useState } from 'react';
 import { GoogleMap, LoadScript, Marker, InfoWindow } from '@react-google-maps/api';
+require('dotenv').config();
 
 const MapContainer = styled.div`
 
@@ -25,7 +26,7 @@ function Map({pontosColeta}) {
 
     return (
         <MapContainer>
-          <LoadScript googleMapsApiKey="AIzaSyDJnwA0agCajwv4g3fRqFgjlTGMgUiykgQ">
+          <LoadScript googleMapsApiKey={process.env.GOOGLE_MAPS_API_KEY}>
             <GoogleMap
               mapContainerStyle={containerStyle}
               center={center}
