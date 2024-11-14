@@ -26,6 +26,22 @@ function Explorar_Itens() {
       images: [guitarra01, guitarra02, guitarra03],
       title: '3º Item',
     },
+
+    {
+      id: 4,
+      images: [guitarra01, guitarra02, guitarra03],
+      title: '4º Item',
+    },
+    {
+      id: 5,
+      images: [guitarra01, guitarra02, guitarra03],
+      title: '5º Item',
+    },
+    {
+      id: 6,
+      images: [guitarra01, guitarra02, guitarra03],
+      title: '6º Item',
+    },
     // Add caso for necessario 
   ];
 

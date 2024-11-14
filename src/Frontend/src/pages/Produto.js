@@ -173,6 +173,24 @@ const productData = {
     description: 'Detalhes do 3º Item',
     images: [guitarra01, guitarra02, guitarra03],
   },
+  4: {
+    id: 4, 
+    title: '4º Item',
+    description: 'Detalhes do 4º Item',
+    images: [guitarra01, guitarra02, guitarra03],
+  },
+  5: {
+    id: 5, 
+    title: '5º Item',
+    description: 'Detalhes do 5º Item',
+    images: [guitarra01, guitarra02, guitarra03],
+  },
+  6: {
+    id: 6, 
+    title: '6º Item',
+    description: 'Detalhes do 6º Item',
+    images: [guitarra01, guitarra02, guitarra03],
+  },
 };
 
 function Produto() {
