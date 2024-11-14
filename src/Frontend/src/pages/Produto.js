@@ -241,7 +241,7 @@ function Produto() {
             </TextContainer>
           </FlexContainer>
         ) : (
-          <p>Produto não encontrado.</p>
+          <p>Produto não encontrado.</p>  
         )}
       </Container>
       <DivProdutos images={Object.values(productData).filter(p => p.id !== parseInt(id))} />

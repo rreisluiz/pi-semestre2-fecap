@@ -19,7 +19,7 @@ function Explorar_Itens() {
     {
       id: 2,
       images: [Controle01, Controle02, Controle03],
-      title: 'Controle PS4',
+      title: 'Controle PS4 ',
     },
     {
       id: 3,

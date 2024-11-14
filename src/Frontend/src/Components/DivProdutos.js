@@ -3,66 +3,81 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
+  max-width: 1400px;
+  margin: 20px auto;
+  padding: 40px;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-  margin: 70px;
-  padding-bottom: 20px;
+  grid-template-columns: repeat(4, 1fr); /* Alterado para 4 colunas por linha */
+  gap: 6em 7em; 
+  overflow-y: auto;
+`;
+
+
+const Card = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 10px;
+  box-shadow: 1px 1px 20px 0 #c0c0c0;
+  max-width: 300px; 
 `;
 
 const ImageContainer = styled.div`
   width: 100%;
-  height: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 10px;
-  border-radius: 8px;
-  background-color: #f9f9f9;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  height: 250px;
+  position: relative;
+  overflow: hidden;
 `;
 
-const Text = styled.p`
-  text-align: left;  /* Alinha o texto à esquerda */
+const CarouselWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  position: relative;
+`;
+
+const Image = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+`;
+
+const Title = styled.h2`
+  color: #2d572c;
+  text-align: justify;
   margin: 10px 0;
-  font-size: 1rem;
-  width: 100%;  /* Garante que o texto ocupe toda a largura do container */
+  font-size: 1.2em;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal; 
+  width: 100%; 
+  max-width: 90%; 
+  flex-shrink: 1; 
 `;
 
 const Button = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  cursor: pointer;
-  white-space: nowrap;
-  height: 40px;
-  padding: 0 16px;
-  font-size: 14px;
-  background-color: #2c5431;
-  color: white;
+  
+  width: 100%;
+  padding: 10px 20px;
   border: none;
-  border-radius: 5px;
-  margin-left: 10px;
-  transition: background-color 0.3s ease, color 0.3s ease;
-  font-weight: bold;
-
-  @media (max-width: 768px) {
-    margin-left: 0;
-    margin-top: 10px;
-  }
-
+  background-color: #2d572c;
+  color: white;
+  cursor: pointer;
+  margin-top: auto;
+  font-weight: 550;
+  font-size: 1.05em;
   &:hover {
-    background-color: #96AF9F;
-    color: #2C5431;
+    background-color: #2d452c;
   }
 `;
 
 const Trail = styled.div`
   display: flex;
   justify-content: center;
-  margin-top: 10px;
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
 `;
 
 const TrailDot = styled.div`
@@ -73,6 +88,37 @@ const TrailDot = styled.div`
   background-color: ${props => (props.active ? '#2c5431' : '#ccc')};
   transition: background-color 0.3s ease;
 `;
+
+// Estilização das setas
+const ArrowButton = styled.button`
+  position: absolute;
+  top: 8em;
+  transform: translateY(-50%); /* Ajusta a posição vertical para o meio da imagem */
+  background: transparent;
+  border: none;
+  z-index: 10;
+  color: #2c5431; /* Cor do botão */
+
+  &:focus {
+    outline: none;
+  }
+
+  &.prev {
+    left: 10px; /* Ajuste da posição horizontal da seta anterior */
+  }
+
+  &.next {
+    right: 10px; /* Ajuste da posição horizontal da seta próxima */
+  }
+
+  span {
+    font-size: 2em; /* Aumente o tamanho das setas, se necessário */
+    color: #2c5431; /* Cor das setas */
+    transition: background-color 0.3s ease; /* Transição suave */
+  }
+
+`;
+
 
 function DivProdutos({ images }) {
   const navigate = useNavigate();
@@ -99,78 +145,72 @@ function DivProdutos({ images }) {
   return (
     <Container>
       {images.map((product, productIndex) => (
-        <ImageContainer key={productIndex}>
-          <div
-            id={`carousel${product.id}`}
-            className="carousel slide"
-            data-bs-ride="false"
-          >
-            <div className="carousel-inner">
-              {product.images.map((image, imgIndex) => (
-                <div
-                  className={`carousel-item ${imgIndex === activeImageIndexes[productIndex] ? 'active' : ''}`}
-                  key={imgIndex}
-                >
-                  <img
-                    src={image}
-                    className="d-block w-100"
-                    alt={`Produto ${product.id} - Imagem ${imgIndex + 1}`}
-                    style={{ borderRadius: '20px' }}
-                  />
+        <Card key={product.id}>
+          <ImageContainer>
+            <CarouselWrapper>
+              <div
+                id={`carousel${product.id}`}
+                className="carousel slide"
+                data-bs-ride="false"
+              >
+                <div className="carousel-inner">
+                  {product.images.map((image, imgIndex) => (
+                    <div
+                      className={`carousel-item ${imgIndex === activeImageIndexes[productIndex] ? 'active' : ''}`}
+                      key={imgIndex}
+                    >
+                      <Image src={image} alt={`Produto ${product.id} - Imagem ${imgIndex + 1}`} />
+                    </div>
+                  ))}
                 </div>
+
+                {/* Botão anterior */}
+                <ArrowButton
+                  className="prev"
+                  onClick={() =>
+                    setActiveImageIndexes((prevIndexes) => {
+                      const newIndexes = [...prevIndexes];
+                      newIndexes[productIndex] =
+                        (newIndexes[productIndex] - 1 + product.images.length) %
+                        product.images.length;
+                      return newIndexes;
+                    })
+                  }
+                >
+                  <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+                </ArrowButton>
+
+                {/* Botão próximo */}
+                <ArrowButton
+                  className="next"
+                  onClick={() =>
+                    setActiveImageIndexes((prevIndexes) => {
+                      const newIndexes = [...prevIndexes];
+                      newIndexes[productIndex] =
+                        (newIndexes[productIndex] + 1) % product.images.length;
+                      return newIndexes;
+                    })
+                  }
+                >
+                  <span className="carousel-control-next-icon" aria-hidden="true"></span>
+                </ArrowButton>
+              </div>
+            </CarouselWrapper>
+
+            {/* Trilha de bolinhas */}
+            <Trail>
+              {product.images.map((_, imgIndex) => (
+                <TrailDot key={imgIndex} active={imgIndex === activeImageIndexes[productIndex]} />
               ))}
-            </div>
-            <button
-              className="carousel-control-prev"
-              type="button"
-              data-bs-target={`#carousel${product.id}`}
-              data-bs-slide="prev"
-              onClick={() =>
-                setActiveImageIndexes((prevIndexes) => {
-                  const newIndexes = [...prevIndexes];
-                  newIndexes[productIndex] =
-                    (newIndexes[productIndex] - 1 + product.images.length) %
-                    product.images.length;
-                  return newIndexes;
-                })
-              }
-            >
-              <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-              <span className="visually-hidden">Previous</span>
-            </button>
-            <button
-              className="carousel-control-next"
-              type="button"
-              data-bs-target={`#carousel${product.id}`}
-              data-bs-slide="next"
-              onClick={() =>
-                setActiveImageIndexes((prevIndexes) => {
-                  const newIndexes = [...prevIndexes];
-                  newIndexes[productIndex] =
-                    (newIndexes[productIndex] + 1) % product.images.length;
-                  return newIndexes;
-                })
-              }
-            >
-              <span className="carousel-control-next-icon" aria-hidden="true"></span>
-              <span className="visually-hidden">Next</span>
-            </button>
-          </div>
+            </Trail>
+          </ImageContainer>
 
-          {/* Trilha de bolinhas */}
-          <Trail>
-            {product.images.map((_, imgIndex) => (
-              <TrailDot key={imgIndex} active={imgIndex === activeImageIndexes[productIndex]} />
-            ))}
-          </Trail>
-
-          {/* Exibindo o nome do produto */}
-          <Text>{product.title}</Text>
+          <Title>{product.title}</Title>
 
           <Button onClick={() => navigate(`/item/${product.id}`)}>
             Saiba Mais
           </Button>
-        </ImageContainer>
+        </Card>
       ))}
     </Container>
   );
