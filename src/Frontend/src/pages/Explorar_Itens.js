@@ -10,56 +10,62 @@ import Controle02 from '../assets/Produtos_Ficticios/Controle02.jpg';
 import Controle03 from '../assets/Produtos_Ficticios/Controle03.jpg';
 
 function Explorar_Itens() {
+  // Lista de itens com suas respectivas imagens, descrições e títulos
   const allItens = [
     {
       id: 1,
       images: [guitarra01, guitarra02, guitarra03],
-      title: '1º Item',
+      title: 'Guitarra Clássica',
     },
     {
       id: 2,
       images: [Controle01, Controle02, Controle03],
-      title: 'Controle PS4 ',
+      title: 'Controle PS4',
     },
     {
       id: 3,
       images: [guitarra01, guitarra02, guitarra03],
-      title: '3º Item',
+      title: 'Guitarra Elétrica',
     },
-
     {
       id: 4,
       images: [guitarra01, guitarra02, guitarra03],
-      title: '4º Item',
+      title: 'Guitarra Premium',
     },
     {
       id: 5,
       images: [guitarra01, guitarra02, guitarra03],
-      title: '5º Item',
+      title: 'Guitarra Acessível',
     },
     {
       id: 6,
       images: [guitarra01, guitarra02, guitarra03],
-      title: '6º Item',
+      title: 'Guitarra Exclusiva',
     },
-    // Add caso for necessario 
   ];
 
+  // Estado para armazenar a lista de produtos e o índice da imagem ativa
   const [products, setProducts] = useState(allItens);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
 
+  // Função para embaralhar o array de produtos
   const shuffleArray = (array) => array.sort(() => Math.random() - 0.5);
 
+  // Efeito para embaralhar a lista de produtos ao carregar o componente
   useEffect(() => {
     setProducts(shuffleArray([...allItens]));
   }, []);
 
+  // Efeito para atualizar o índice da imagem ativa a cada 2 segundos
   useEffect(() => {
     const interval = setInterval(() => {
-      setActiveImageIndex((prevIndex) => (prevIndex + 1) % allItens[0].images.length);
+      setActiveImageIndex((prevIndex) => (prevIndex + 1) % products[0].images.length);
     }, 2000);
+
     return () => clearInterval(interval);
-  }, []);
+  }, [products]);
+
+  // Atualiza os produtos com o índice da imagem ativa
   const updatedProducts = products.map((product) => ({
     ...product,
     activeImageIndex,

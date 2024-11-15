@@ -3,14 +3,14 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
-  max-width: 1400px;
-  margin: 20px auto;
-  padding: 40px;
+  max-width: 77em;
+  margin: 7em auto;
+  padding: 20px;
   display: grid;
   grid-template-columns: repeat(4, 1fr); /* Alterado para 4 colunas por linha */
-  gap: 6em 7em; 
+  gap: 6em 4em; 
   overflow-y: auto;
-`;
+  `;
 
 
 const Card = styled.div`
@@ -20,31 +20,35 @@ const Card = styled.div`
   margin-bottom: 10px;
   box-shadow: 1px 1px 20px 0 #c0c0c0;
   max-width: 300px; 
-`;
+  border-radius:8px;
+  `;
 
 const ImageContainer = styled.div`
   width: 100%;
   height: 250px;
   position: relative;
   overflow: hidden;
-`;
+  margin-bottom: 40px; /* Adicione esta linha */
+  border-radius:8px;
+  `;
+
 
 const CarouselWrapper = styled.div`
   width: 100%;
   height: 100%;
   position: relative;
-`;
+  `;
 
 const Image = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
-`;
+  `;
 
 const Title = styled.h2`
   color: #2d572c;
-  text-align: justify;
-  margin: 10px 0;
+  text-align: center;
+  margin: -23px auto 70px auto; 
   font-size: 1.2em;
   word-wrap: break-word;
   overflow-wrap: break-word;
@@ -52,7 +56,21 @@ const Title = styled.h2`
   width: 100%; 
   max-width: 90%; 
   flex-shrink: 1; 
-`;
+  `;
+  
+const Description = styled.h2`
+  color: #2d572c;
+  text-align: center;
+  margin: -23px auto 70px auto; 
+  font-size: 1.2em;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal; 
+  width: 100%; 
+  max-width: 90%; 
+  flex-shrink: 1; 
+  `;
+
 
 const Button = styled.button`
   
@@ -65,6 +83,7 @@ const Button = styled.button`
   margin-top: auto;
   font-weight: 550;
   font-size: 1.05em;
+  border-radius:0px 0px 8px 8px;
   &:hover {
     background-color: #2d452c;
   }
@@ -206,7 +225,6 @@ function DivProdutos({ images }) {
           </ImageContainer>
 
           <Title>{product.title}</Title>
-
           <Button onClick={() => navigate(`/item/${product.id}`)}>
             Saiba Mais
           </Button>
