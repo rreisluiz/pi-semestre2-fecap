@@ -1,5 +1,6 @@
-import React from "react";
-import styled from "styled-components";
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import styled from 'styled-components';
 
 const Container = styled.div`
   padding: 20px;
@@ -43,10 +44,30 @@ const UserName = styled.h2`
 `;
 
 function UserProfile(){
+  const [nomeUsuario, setNomeUsuario] = useState('');
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+
+    if (token) {
+      axios.get('/users/nome', { // Rota para obter o nome do usuário
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then(response => {
+        setNomeUsuario(response.data.nome); // Define o nome do usuário no estado
+      })
+      .catch(error => {
+        console.error('Erro ao obter nome do usuário:', error);
+      });
+    }
+  }, []); // Executa o efeito apenas uma vez, quando o componente é montado
+
   return (
     <Container>
       <WelcomeText>Seja bem-vindo,</WelcomeText>
-      <UserName>nome_usuario!</UserName>
+      <UserName>{nomeUsuario}!</UserName> 
     </Container>
   );
 };

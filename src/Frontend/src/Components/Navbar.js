@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom'; // Importe Link, useLocation e useNavigate em uma única linha
 import styled from "styled-components";
 import RDSemFundo1 from '../assets/rd-sem-fundo-1.png';
 
@@ -208,6 +208,29 @@ const SearchIcon = styled.svg`
 function NavBar() {
   const location = useLocation();
 
+  const navigate = useNavigate();
+  const handlePerfilClick = () => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      // Usuário autenticado, redirecionar para a página de perfil
+      navigate('/pagina-usuario');
+    } else {
+      // Usuário não autenticado, redirecionar para a página de cadastro
+      navigate('/create-account');
+    }
+  };
+  const handleDoarClick = () => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      // Usuário autenticado, redirecionar para a página de perfil
+      navigate('/quer-doar');
+    } else {
+      // Usuário não autenticado, redirecionar para a página de cadastro
+      navigate('/create-account');
+    }
+  };
+
+
   return (
     <NavbarContainer>
       <Logo to="/">
@@ -236,9 +259,9 @@ function NavBar() {
         <MenuItem to="/sobre-nos" active={location.pathname === "/sobre-nos"}>Sobre Nós</MenuItem>
 
         <Spacer /> 
-        <ButtonStyled as={Link} to="/loginpage">Login</ButtonStyled>
+        <ButtonStyled onClick={handlePerfilClick}>Perfil</ButtonStyled> 
         <BtnCadastrar>
-          <TextWrapper as={Link} to="/create-account">Cadastrar</TextWrapper>
+          <TextWrapper onClick={handleDoarClick}>Quer Doar?</TextWrapper>
         </BtnCadastrar>
       </MenuContainer>
     </NavbarContainer>

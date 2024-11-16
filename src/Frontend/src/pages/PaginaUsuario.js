@@ -1,5 +1,5 @@
 import React from "react";
-import NavBar2 from "../Components/NavBar2"
+import Navbar from "../Components/Navbar";
 import BemVindo from "../Components/BemVindo"
 import Usuario from "../Components/Usuario";
 import ProdutosCadastrados from "../Components/ProdutosCadastrados";
@@ -10,7 +10,7 @@ import Footer from "../Components/Footer";
 function PaginaUsuario(){
     return(
         <div>
-            <NavBar2/>
+            <Navbar/>
             <BemVindo/>
             <Usuario/>
             <ProdutosCadastrados/>

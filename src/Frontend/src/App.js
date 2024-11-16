@@ -7,6 +7,7 @@ import PontosColeta from "./pages/PontosColeta";
 import NotFound from './Components/NotFound';
 import Produto from './pages/Produto';
 import PaginaUsuario from "./pages/PaginaUsuario";
+import DoarItemPage from './pages/DoarItemPage';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
           <Route path='/explorar_itens' element={<Explorar_Itens />} />
           <Route path='/item/:id' element={<Produto />} />
           <Route path='/pagina-usuario' element={<PaginaUsuario />} />
+          <Route path='/quer-doar' element={<DoarItemPage />} />
           <Route path="*" element={<NotFound />} /> {/* Rota 404 */}
         </Routes>
       </Router>

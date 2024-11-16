@@ -6,34 +6,43 @@ import axios from "axios";
 const LoginForm = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState(""); // Estado para erro
+  const [password, setPassword] = useState("");   
 
-  const handleRegisterClick = () => {
+  const [error, setError] = useState("");
+
+  const   
+ handleRegisterClick = () => {
     navigate("/create-account");
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(""); // Limpa o erro anterior
+    setError("");
 
     try {
+      console.log("Antes da requisição");
       const response = await axios.post("http://localhost:5000/users/login", {
         email_usuario: email,
         senha_usuario: password,
       });
 
-      alert(response.data.message); // Exibe a mensagem de sucesso do backend
+      // Armazenar o token no localStorage
+      localStorage.setItem('token', response.data.token);
+      
+      console.log("Depois da requisição");
+
+      console.log(response);
+      console.log(response.data);
+
+      alert(response.data.message);
       navigate("/nextPage");
+
     } catch (error) {
       console.error("Erro ao realizar login:", error);
 
-      // Verifica o erro retornado pelo backend e exibe a mensagem correspondente
       if (error.response) {
-        // Se a resposta da API for válida (erro com status HTTP)
-        setError(error.response.data.message); // Atualiza o estado de erro com a mensagem do backend
+        setError(error.response.data.message);
       } else {
-        // Caso não haja resposta, mostra um erro genérico
         setError("Erro ao realizar o login. Tente novamente.");
       }
     }
@@ -69,7 +78,6 @@ const LoginForm = () => {
             />
           </FormField>
 
-          {/* Exibindo a mensagem de erro se houver */}
           {error && <ErrorMessage>{error}</ErrorMessage>}
 
           <ButtonGroup>
@@ -83,7 +91,6 @@ const LoginForm = () => {
     </FormWrapper>
   );
 };
-
 // Estilos para o componente
 
 const FormWrapper = styled.div`
