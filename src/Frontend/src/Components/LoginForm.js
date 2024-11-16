@@ -35,7 +35,7 @@ const LoginForm = () => {
       console.log(response.data);
 
       alert(response.data.message);
-      navigate("/nextPage");
+      navigate("/pagina-usuario");
 
     } catch (error) {
       console.error("Erro ao realizar login:", error);
