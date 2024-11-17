@@ -83,8 +83,7 @@ const Spacer = styled.div`
   width: 15px;
 `;
 
-const ButtonUser = styled.button`
-  display: flex;
+  const ButtonUser = styled.button`	
   align-items: center;
   justify-content: center;
   text-align: center;
@@ -140,6 +139,7 @@ const ButtonDoar = styled.div`
 `;
 
 const TextWrapper = styled.div`
+  text-decoration:none;
   color: white;
   font-family: "Inter-Regular", Helvetica;
   font-size: 13px;

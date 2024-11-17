@@ -1,7 +1,7 @@
 import React from "react";
-import RDSemFundo1 from '../assets/rd-sem-fundo-1.png';
+import { Link, useLocation, useNavigate } from 'react-router-dom'; // Importe Link, useLocation e useNavigate em uma única linha
 import styled from "styled-components";
-import { Link } from 'react-router-dom';
+import RDSemFundo1 from '../assets/rd-sem-fundo-1.png';
 
 const NavbarContainer = styled.div`
   background-image: url(./rectangle-6.svg);
@@ -60,7 +60,8 @@ const MenuItem = styled(Link)`
   height: 40px;
   padding: 8px 16px;
   font-size: 14px;
-  color: #002c20;
+  color: ${({ active }) => (active ? 'white' : '#002c20')};
+  background-color: ${({ active }) => (active ? '#2C5431' : 'transparent')};
   border-radius: 5px;
   font-family: "Inter-Bold", Helvetica;
   font-weight: 700;
@@ -114,9 +115,8 @@ const ButtonStyled = styled.button`
 
 const BtnCadastrar = styled.div`
   background-color: #ffffff;
-  border: 1px solid;
-  border-color: #000000;
-  border-radius: 13px;
+  border: 1px solid #2C5431;
+  border-radius: 5px;
   height: 42px;
   display: flex;
   align-items: center;
@@ -206,6 +206,31 @@ const SearchIcon = styled.svg`
 `;
 
 function NavBar() {
+  const location = useLocation();
+
+  const navigate = useNavigate();
+  const handlePerfilClick = () => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      // Usuário autenticado, redirecionar para a página de perfil
+      navigate('/pagina-usuario');
+    } else {
+      // Usuário não autenticado, redirecionar para a página de cadastro
+      navigate('/create-account');
+    }
+  };
+  const handleDoarClick = () => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      // Usuário autenticado, redirecionar para a página de perfil
+      navigate('/quer-doar');
+    } else {
+      // Usuário não autenticado, redirecionar para a página de cadastro
+      navigate('/create-account');
+    }
+  };
+
+
   return (
     <NavbarContainer>
       <Logo to="/">
@@ -213,8 +238,7 @@ function NavBar() {
       </Logo>
 
       <MenuContainer>
-        {/* Componente de Pesquisa */}
-        <SearchWrapper per>
+        <SearchWrapper>
           <SearchInput type="text" placeholder="Pesquisar" />
           <SearchButton>
             <SearchIcon aria-hidden="true" viewBox="0 0 24 24">
@@ -226,18 +250,18 @@ function NavBar() {
         </SearchWrapper>
 
         <Spacer /> 
-        <MenuItem to="/">Home</MenuItem>
+        <MenuItem to="/" active={location.pathname === "/"}>Home</MenuItem>
         <Spacer /> 
-        <MenuItem to="/explorar_itens">Produto</MenuItem>
+        <MenuItem to="/explorar_itens" active={location.pathname === "/explorar_itens"}>Produto</MenuItem>
         <Spacer /> 
-        <MenuItem to="/pontos-coleta">Pontos de Coleta</MenuItem>
+        <MenuItem to="/pontos-coleta" active={location.pathname === "/pontos-coleta"}>Pontos de Coleta</MenuItem>
         <Spacer /> 
-        <MenuItem to="/sobre-nos">Sobre Nós</MenuItem>
+        <MenuItem to="/sobre-nos" active={location.pathname === "/sobre-nos"}>Sobre Nós</MenuItem>
 
         <Spacer /> 
-        <ButtonStyled as={Link} to="/loginpage">Login</ButtonStyled>
+        <ButtonStyled onClick={handlePerfilClick}>Perfil</ButtonStyled> 
         <BtnCadastrar>
-          <TextWrapper as={Link} to="/create-account">Cadastrar</TextWrapper>
+          <TextWrapper onClick={handleDoarClick}>Quer Doar?</TextWrapper>
         </BtnCadastrar>
       </MenuContainer>
     </NavbarContainer>

@@ -6,6 +6,8 @@ import Explorar_Itens from "./pages/Explorar_Itens";
 import PontosColeta from "./pages/PontosColeta";
 import NotFound from './Components/NotFound';
 import Produto from './pages/Produto';
+import PaginaUsuario from "./pages/PaginaUsuario";
+import DoarItemPage from './pages/DoarItemPage';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import PaginaUsuario from "./pages/PaginaUsuario";
 import Siganos from './pages/Siganos';
@@ -22,8 +24,9 @@ function App() {
           <Route path='/pontos-coleta' element={<PontosColeta />} />
           <Route path='/explorar_itens' element={<Explorar_Itens />} />
           <Route path='/item/:id' element={<Produto />} />
-          <Route path="*" element={<NotFound />} /> {/* Rota 404 */}
           <Route path='/pagina-usuario' element={<PaginaUsuario />} />
+          <Route path='/quer-doar' element={<DoarItemPage />} />
+          <Route path="*" element={<NotFound />} /> {/* Rota 404 */}
           <Route path='/siga-nos' element={<Siganos />} />
         </Routes>
       </Router>

@@ -1,4 +1,5 @@
 const db = require('../db')
+const jwt = require('jsonwebtoken');
 
 exports.getAllItems = async (req, res) => {
     const query = `SELECT * FROM item;`;
@@ -22,26 +23,47 @@ exports.getItemsByUser = async (req, res) => {
 
 exports.addItem = async (req, res) => {
     try {
-        const { foto_item, descricao_item, nome_item, categoria_item, estado_uso_item, cpf } = req.body;
+        const authHeader = req.headers.authorization;
 
-        if (!cpf || !nome_item || !descricao_item || !categoria_item || !estado_uso_item || !foto_item) {
-            res.status(400).json({ message: 'Todos os campos obrigatórios devem ser preenchidos.' });
+        if (!authHeader || !authHeader.startsWith('Bearer ')) {
+            return res.status(401).json({ message: 'Token ausente ou malformado.' });
+        }
+
+        const token = authHeader.split(' ')[1];
+
+        // Verificação do token com o segredo do ambiente
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        console.log('Token decodificado:', decoded);
+
+        const cpf = decoded.id;
+        const { foto_item, descricao_item, nome_item, categoria_item, estado_uso_item } = req.body;
+
+        if (!foto_item || !descricao_item || !nome_item || !categoria_item || !estado_uso_item) {
+            return res.status(400).json({ message: 'Campos obrigatórios ausentes.' });
         }
 
         const query = `
             INSERT INTO item (foto_item, descricao_item, nome_item, categoria_item, estado_uso_item, cpf)
-            VALUES
-            (?, ?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?)
         `;
-
-        await db.query(query, [foto_item, descricao_item, nome_item, categoria_item, estado_uso_item, cpf], (err, result) => {});
+        const response = await db.query(query, [foto_item, descricao_item, nome_item, categoria_item, estado_uso_item, cpf]);
+        console.log('Item inserido:', response);
 
         res.status(200).json({ message: 'Item cadastrado com sucesso!' });
     } catch (error) {
-        console.error('Erro ao inserir novo item:', err);
-        res.status(500).json({ message: 'Erro ao cadastrar o novo item. Tente novamente mais tarde.' });
+        console.error('Erro ao cadastrar item:', error.message);
+
+        // Verifique se o erro é relacionado ao token
+        if (error.name === 'JsonWebTokenError') {
+            return res.status(401).json({ message: 'Token inválido.' });
+        } else if (error.name === 'TokenExpiredError') {
+            return res.status(401).json({ message: 'Token expirado.' });
+        }
+
+        res.status(500).json({ message: 'Erro ao cadastrar o item.' });
     }
-}
+};
+
 
 exports.updateItem = async (req, res) => {
     try {

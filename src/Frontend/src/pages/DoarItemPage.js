@@ -1,22 +1,22 @@
 import React from "react";
 import styled from "styled-components";
-import LoginForm from "../Components/LoginForm";
+import DoarItemForm from "../Components/DoarItemForm.js";
+import imgDoar from '../img/img_doar.png'; // Importe a imagem de fundo
 
-function LoginPage() {
+function DoarItemPage() {
   return (
     <MainContainer>
       <ImageSection>
         <BackgroundImage
           loading="lazy"
-          src="https://cdn.builder.io/api/v1/image/assets/TEMP/a875d5e269a9735ba58fda05bee0d844a01655a32b0b586a006b10838131e03d?placeholderIfAbsent=true&apiKey=c30f435924ad4a89a84cfb0e00a2057f"
-          alt="Login background"
+          src={imgDoar} // Use a imagem importada
+          alt="Doar Item background"
         />
       </ImageSection>
       <FormSection>
-        <Title>Iniciar sessão</Title>
-        <LoginForm />
+        <Title>Doe um Item</Title>
+        <DoarItemForm />
       </FormSection>
-      <BackArrow href="/">&#8592;</BackArrow>
     </MainContainer>
   );
 }
@@ -59,13 +59,4 @@ const Title = styled.h1`
   text-align: center;
 `;
 
-const BackArrow = styled.a`
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  color: #fff;
-  font-size: 30px;
-  text-decoration: none;
-`;
-
-export default LoginPage;
+export default DoarItemPage;
