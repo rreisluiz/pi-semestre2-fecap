@@ -145,6 +145,7 @@ const TextWrapper = styled.div`
   text-align: center;
   width: 72px;
   text-decoration: none;
+  cursor: pointer;
 
   ${BtnCadastrar}:hover & {
     color: white;
