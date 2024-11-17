@@ -16,7 +16,7 @@ const extractToken = (req, res, next) => {
 
 const authMiddleware = (req, res, next) => {
   // 1. Obter o token do header da requisição
-  const token = req.headers.authorization;
+  const token = req.token || req.headers.authorization; // Usar req.token se disponível
 
   // 2. Verificar se o token foi fornecido
   if (!token) {

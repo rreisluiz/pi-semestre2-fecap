@@ -50,7 +50,7 @@ function UserProfile(){
     const token = localStorage.getItem('token');
 
     if (token) {
-      axios.get('/users/nome', { // Rota para obter o nome do usuário
+      axios.get('http://localhost:5000/users/nome', { // Rota para obter o nome do usuário
         headers: {
           Authorization: `Bearer ${token}`,
         },

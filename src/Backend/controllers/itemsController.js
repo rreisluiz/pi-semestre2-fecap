@@ -22,68 +22,47 @@ exports.getItemsByUser = async (req, res) => {
 }
 
 exports.addItem = async (req, res) => {
-
     try {
-        // 1. Obter o token do header da requisição
-        const token = req.headers.authorization;
+        const authHeader = req.headers.authorization;
 
-        // 2. Verificar se o token foi fornecido
-        if (!token) {
-            // Adicionar headers CORS na resposta
-            res.set({
-                'Access-Control-Allow-Origin': 'http://localhost:3000',
-                'Access-Control-Allow-Methods': 'POST',
-                'Access-Control-Allow-Headers': 'Content-Type, Authorization'
-            });
-            return res.status(401).json({ message: 'Token não fornecido' });
+        if (!authHeader || !authHeader.startsWith('Bearer ')) {
+            return res.status(401).json({ message: 'Token ausente ou malformado.' });
         }
 
-        // 3. Decodificar o token
-        const decoded = jwt.verify(token, 'senha_de_fallback'); // Substitua 'seu_segredo' pelo segredo do JWT
+        const token = authHeader.split(' ')[1];
 
-        // 4. Acessar o CPF do usuário no payload
-        const cpf = decoded.id; // 'id' é a propriedade que você usou para armazenar o CPF no payload
-        console.log(cpf)
-        // 5. Usar o CPF para inserir o item no banco de dados
+        // Verificação do token com o segredo do ambiente
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        console.log('Token decodificado:', decoded);
+
+        const cpf = decoded.id;
         const { foto_item, descricao_item, nome_item, categoria_item, estado_uso_item } = req.body;
 
-        if (!cpf || !nome_item || !descricao_item || !categoria_item || !estado_uso_item || !foto_item) {
-            // Adicionar headers CORS na resposta
-            res.set({
-                'Access-Control-Allow-Origin': 'http://localhost:3000',
-                'Access-Control-Allow-Methods': 'POST',
-                'Access-Control-Allow-Headers': 'Content-Type, Authorization'
-            });
-            return res.status(400).json({ message: 'Todos os campos obrigatórios devem ser preenchidos.' });
+        if (!foto_item || !descricao_item || !nome_item || !categoria_item || !estado_uso_item) {
+            return res.status(400).json({ message: 'Campos obrigatórios ausentes.' });
         }
 
         const query = `
             INSERT INTO item (foto_item, descricao_item, nome_item, categoria_item, estado_uso_item, cpf)
-            VALUES
-            (?, ?, ?, ?, ?, ?)
-          `;
+            VALUES (?, ?, ?, ?, ?, ?)
+        `;
+        const response = await db.query(query, [foto_item, descricao_item, nome_item, categoria_item, estado_uso_item, cpf]);
+        console.log('Item inserido:', response);
 
-        await db.query(query, [foto_item, descricao_item, nome_item, categoria_item, estado_uso_item, cpf], (err, result) => { });
-
-        // Adicionar headers CORS na resposta
-        res.set({
-            'Access-Control-Allow-Origin': 'http://localhost:3000',
-            'Access-Control-Allow-Methods': 'POST',
-            'Access-Control-Allow-Headers': 'Content-Type, Authorization'
-        });
         res.status(200).json({ message: 'Item cadastrado com sucesso!' });
-
     } catch (error) {
-        console.error('Erro ao inserir novo item:', error);
-        // Adicionar headers CORS na resposta
-        res.set({
-            'Access-Control-Allow-Origin': 'http://localhost:3000',
-            'Access-Control-Allow-Methods': 'POST',
-            'Access-Control-Allow-Headers': 'Content-Type, Authorization'
-        });
-        res.status(500).json({ message: 'Erro ao cadastrar o novo item. Tente novamente mais tarde.' });
+        console.error('Erro ao cadastrar item:', error.message);
+
+        // Verifique se o erro é relacionado ao token
+        if (error.name === 'JsonWebTokenError') {
+            return res.status(401).json({ message: 'Token inválido.' });
+        } else if (error.name === 'TokenExpiredError') {
+            return res.status(401).json({ message: 'Token expirado.' });
+        }
+
+        res.status(500).json({ message: 'Erro ao cadastrar o item.' });
     }
-}
+};
 
 
 exports.updateItem = async (req, res) => {

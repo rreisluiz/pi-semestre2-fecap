@@ -3,10 +3,23 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 exports.createUser = async (req, res) => {
-    const { CPF, nome_usuario, email_usuario, senha_usuario, data_nascimento_usuario, logradouro, complemento, bairro, uf, cidade, estado, telefone } = req.body;
+    const { 
+        CPF, 
+        nome_usuario, 
+        email_usuario, 
+        senha_usuario, 
+        data_nascimento_usuario, 
+        CEP, 
+        logradouro, 
+        EnderecoNumero, 
+        bairro, 
+        uf, 
+        cidade, 
+        telefone 
+    } = req.body;
 
-    // Verifica se todos os dados necessários foram enviados
-    if (!CPF || !nome_usuario || !email_usuario || !senha_usuario || !data_nascimento_usuario) {
+    // Verifica se todos os dados obrigatórios foram enviados
+    if (!CPF || !nome_usuario || !email_usuario || !senha_usuario || !data_nascimento_usuario || !CEP || !EnderecoNumero) {
         return res.status(400).json({ message: 'Todos os campos obrigatórios devem ser preenchidos.' });
     }
 
@@ -30,7 +43,20 @@ exports.createUser = async (req, res) => {
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             `;
 
-            await db.query(query, [CPF, nome_usuario, email_usuario, hashedPassword, data_nascimento_usuario, logradouro, complemento, bairro, uf, cidade, estado, telefone]);
+            await db.query(query, [
+                CPF, 
+                nome_usuario, 
+                email_usuario, 
+                hashedPassword, 
+                data_nascimento_usuario, 
+                CEP, 
+                logradouro, 
+                EnderecoNumero, 
+                bairro, 
+                uf, 
+                cidade, 
+                telefone
+            ]);
 
             res.status(200).json({ message: 'Usuário cadastrado com sucesso!' });
         });
@@ -38,7 +64,9 @@ exports.createUser = async (req, res) => {
         console.error('Erro ao inserir usuário:', error);
         return res.status(500).json({ message: 'Erro ao cadastrar o usuário. Tente novamente mais tarde.' });
     }
-}
+};
+
+
 
 function generateToken(user) {
     // 1. Definir a payload do token (dados do usuário)
@@ -136,7 +164,7 @@ exports.loginUser = async (req, res) => {
 
 exports.getNomeUsuario = async (req, res) => {
     try {
-      const token = req.headers.authorization;
+        const token = req.token || req.headers.authorization; // Usar req.token se disponível
   
       if (!token) {
         return res.status(401).json({ message: 'Token não fornecido' });

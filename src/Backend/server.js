@@ -43,7 +43,8 @@ app.options('/items/add', cors({
 }));
 
 app.post('/users/login', usersController.loginUser);
-app.use('/users', usersRoutes);
+app.get('/users/nome', extractToken, authMiddleware, usersController.getNomeUsuario);
+app.post('/users/add', usersController.createUser);
 app.use('/items', productsRoutes);
 app.use('/interests', interestsRoutes);
 app.get('/pagina-usuario', authMiddleware, (req, res) => {
@@ -51,4 +52,5 @@ app.get('/pagina-usuario', authMiddleware, (req, res) => {
     res.send('Página do usuário'); 
   });
 app.post('/items/add', extractToken, authMiddleware, itemsController.addItem); 
-app.get('/users/nome', usersController.getNomeUsuario);
+
+
