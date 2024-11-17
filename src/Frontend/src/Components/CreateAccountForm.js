@@ -15,6 +15,128 @@ const CreateAccountForm = () => {
     senha_usuario: "",
   });
 
+  function validarDataNascimento(data) {
+    const hoje = new Date();
+    const dataNascimento = new Date(data);
+    let idade = hoje.getFullYear() - dataNascimento.getFullYear();
+    const m = hoje.getMonth() - dataNascimento.getMonth();
+  
+    // Ajusta a idade se o aniversário ainda não ocorreu este ano
+    if (m < 0 || (m === 0 && hoje.getDate() < dataNascimento.getDate())) {
+      idade--;
+    }
+  
+    // Verificar se a data de nascimento é anterior a hoje
+    if (dataNascimento > hoje) {
+      return false;
+    }
+  
+    // Verificar se a idade é maior ou igual a 18 anos
+    return idade >= 18;
+  }
+
+  function validarCPF(cpf) {
+    // Remover caracteres não numéricos
+    cpf = cpf.replace(/[^\d]+/g, '');
+  
+    // Verificar se o CPF tem 11 dígitos
+    if (cpf.length !== 11) {
+      return false;
+    }
+  
+    // Verificar se todos os dígitos são iguais (CPF inválido)
+    if (/^(\d)\1+$/.test(cpf)) {
+      return false;
+    }
+  
+    // Calcular os dígitos verificadores
+    let soma = 0;
+    for (let i = 0; i < 9; i++) {
+      soma += parseInt(cpf.charAt(i)) * (10 - i);
+    }
+    let resto = 11 - (soma % 11);
+    if (resto === 10 || resto === 11) {
+      resto = 0;
+    }
+    if (resto !== parseInt(cpf.charAt(9))) {
+      return false;
+    }
+    soma = 0;
+    for (let i = 0; i < 10; i++) {
+      soma += parseInt(cpf.charAt(i)) * (11 - i);
+    }
+    resto = 11 - (soma % 11);
+    if (resto === 10 || resto === 11) {
+      resto = 0;
+    }
+    if (resto !== parseInt(cpf.charAt(10))) {
+      return false;
+    }
+  
+    return true;
+  }
+
+  function formatarCPF(cpf) {
+    cpf = cpf.replace(/\D/g, ''); // Remove tudo o que não for dígito
+    cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
+    cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
+    cpf = cpf.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+    return cpf;
+  }
+  
+  function formatarTelefone(telefone) {
+    telefone = telefone.replace(/\D/g, '');
+    
+    // Limita o número de dígitos
+    if (telefone.length > 11) {
+      telefone = telefone.slice(0, 11);
+    }
+  
+    telefone = telefone.replace(/(\d{2})(\d)/, '($1) $2');
+    telefone = telefone.replace(/(\d{5})(\d)/, '$1-$2');
+    return telefone;
+  }
+
+  const handleTelefoneChange = (e) => {
+    const telefoneFormatado = formatarTelefone(e.target.value);
+    setFormData(prevData => ({ ...prevData, telefone: telefoneFormatado }));
+  };
+
+  const handleCPFChange = (e) => {
+    let cpf = e.target.value;
+  
+    // Limita o número de dígitos
+    if (cpf.length > 14) { 
+      cpf = cpf.slice(0, 14); // Corta a string para ter no máximo 14 caracteres (incluindo pontos e traço)
+    }
+  
+    const cpfFormatado = formatarCPF(cpf);
+    setFormData(prevData => ({ ...prevData, CPF: cpfFormatado }));
+  };
+
+  const handleCEPChange = async (e) => {
+    const cep = e.target.value.replace(/\D/g, '');
+  
+    if (cep.length === 8) {
+      try {
+        const response = await axios.get(`https://viacep.com.br/ws/${cep}/json/`);
+        setFormData({
+          ...formData,
+          CEP: cep,
+          logradouro: response.data.logradouro,
+          bairro: response.data.bairro,
+          cidade: response.data.localidade,
+          uf: response.data.uf,
+        });
+      } catch (error) {
+        console.error('Erro ao buscar CEP:', error);
+        // Trate o erro, talvez exibindo uma mensagem para o usuário
+      }
+    } else {
+      setFormData({ ...formData, CEP: cep });
+    }
+  };
+  
   const handleChange = (e) => {
     const { id, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [id]: value }));
@@ -23,9 +145,30 @@ const CreateAccountForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault(); // Evita o envio padrão do formulário
 
+    if (!validarDataNascimento(formData.data_nascimento_usuario)) {
+      alert("Data de nascimento inválida. Você deve ter pelo menos 18 anos.");
+      return;
+    }
+
+    if (!validarCPF(formData.CPF)) {
+      alert("CPF inválido.");
+      return;
+    }
+
     try {
         // Envia a requisição POST para o backend com os dados do formulário
-        const response = await axios.post("http://localhost:5000/users/add", formData);
+        const cpfSemFormatacao = formData.CPF.replace(/\D/g, '');
+        const telefoneSemFormatacao = formData.telefone.replace(/\D/g, '');
+
+        // Criar um novo objeto com os dados do formulário, incluindo CPF e telefone sem formatação
+        const dadosFormulario = {
+          ...formData,
+          CPF: cpfSemFormatacao,
+          telefone: telefoneSemFormatacao,
+        };
+
+        const response = await axios.post("http://localhost:5000/users/add", dadosFormulario); // Corrigido para enviar dadosFormulario
+
         
         // Verifica o que foi retornado pelo backend e exibe a mensagem de sucesso
         alert(response.data.message); // Exibe a mensagem de sucesso do backend
@@ -39,10 +182,11 @@ const CreateAccountForm = () => {
     }
 };
 
-  return (
-    <FormWrapper>
-      <form onSubmit={handleSubmit}>
-        <FormContent>
+return (
+  <FormWrapper>
+    <form onSubmit={handleSubmit}>
+      <FormContent>
+        <FormColumn> {/* Primeira coluna */}
           <FormField>
             <Label htmlFor="nome_usuario">Nome Completo</Label>
             <InputBase
@@ -55,6 +199,55 @@ const CreateAccountForm = () => {
             />
           </FormField>
 
+          <FormField>
+            <Label htmlFor="email_usuario">Email</Label>
+            <InputBase
+              type="email"
+              id="email_usuario"
+              placeholder="Email"
+              required
+              value={formData.email_usuario}
+              onChange={handleChange}
+            />
+          </FormField>
+
+          <FormField>
+            <Label htmlFor="CEP">CEP</Label>
+            <InputBase
+              type="text"
+              id="CEP"
+              placeholder="CEP"
+              required
+              value={formData.CEP}
+              onChange={handleCEPChange}
+            />
+          </FormField>
+
+          <FormField>
+            <Label htmlFor="EnderecoNumero">Número</Label>
+            <InputBase
+              type="text"
+              id="EnderecoNumero"
+              placeholder="Complemento"
+              value={formData.complemento}
+              onChange={handleChange}
+            />
+          </FormField>
+
+          <FormField>
+            <Label htmlFor="senha_usuario">Senha</Label>
+            <InputBase
+              type="password"
+              id="senha_usuario"
+              placeholder="Senha"
+              required
+              value={formData.senha_usuario}
+              onChange={handleChange}
+            />
+          </FormField>
+        </FormColumn>
+
+        <FormColumn> {/* Segunda coluna */}
           <FormField>
             <Label htmlFor="data_nascimento_usuario">Data de Nascimento</Label>
             <InputBase
@@ -74,7 +267,7 @@ const CreateAccountForm = () => {
               placeholder="Telefone"
               required
               value={formData.telefone}
-              onChange={handleChange}
+              onChange={handleTelefoneChange}
             />
           </FormField>
 
@@ -86,19 +279,7 @@ const CreateAccountForm = () => {
               placeholder="CPF"
               required
               value={formData.CPF}
-              onChange={handleChange}
-            />
-          </FormField>
-
-          <FormField>
-            <Label htmlFor="email_usuario">Email</Label>
-            <InputBase
-              type="email"
-              id="email_usuario"
-              placeholder="Email"
-              required
-              value={formData.email_usuario}
-              onChange={handleChange}
+              onChange={handleCPFChange}
             />
           </FormField>
 
@@ -115,42 +296,48 @@ const CreateAccountForm = () => {
           </FormField>
 
           <FormField>
-            <Label htmlFor="senha_usuario">Senha</Label>
+            <Label htmlFor="bairro">Bairro</Label>
             <InputBase
-              type="password"
-              id="senha_usuario"
-              placeholder="Senha"
+              type="text"
+              id="bairro"
+              placeholder="Bairro"
               required
-              value={formData.senha_usuario}
+              value={formData.bairro}
               onChange={handleChange}
             />
           </FormField>
+        </FormColumn>
+      </FormContent>
 
-          <ButtonGroup>
-            <RegisterButton type="submit">Registrar-se</RegisterButton>
-            <LoginButton type="button" onClick={() => navigate("/loginpage")}>
-              Já tenho uma conta
-            </LoginButton>
-          </ButtonGroup>
-        </FormContent>
-      </form>
-    </FormWrapper>
-  );
+      <ButtonGroup>
+        <RegisterButton type="submit">Registrar-se</RegisterButton>
+        <LoginButton type="button" onClick={() => navigate("/loginpage")}>
+            Já tenho uma conta
+        </LoginButton>
+      </ButtonGroup>
+    </form>
+  </FormWrapper>
+);
 };
 
-const FormWrapper = styled.div`
-  width: 100%;
-  max-width: 350px;
-  font-family: Inter, sans-serif;
-  margin: 0 auto;
-  position: relative;
+const FormContent = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); // Divide em duas colunas
+  gap: 16px;
 `;
 
-const FormContent = styled.div`
+const FormColumn = styled.div`
   display: flex;
   flex-direction: column;
   gap: 16px;
-  align-items: flex-start;
+`;
+
+const FormWrapper = styled.div`
+  width: 100%;
+  max-width: 900px;
+  font-family: Inter, sans-serif;
+  margin: 0 auto;
+  position: relative;
 `;
 
 const FormField = styled.div`
@@ -181,6 +368,7 @@ const ButtonGroup = styled.div`
   justify-content: space-between;
   width: 100%;
   gap: 16px;
+  margin-top: 70px;
 `;
 
 const ButtonBase = styled.button`

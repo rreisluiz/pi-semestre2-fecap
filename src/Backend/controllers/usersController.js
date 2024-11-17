@@ -26,7 +26,7 @@ exports.createUser = async (req, res) => {
             }
 
             const query = `
-                INSERT INTO usuario (CPF, nome_usuario, email_usuario, senha_usuario, data_nascimento_usuario, logradouro, complemento, bairro, uf, cidade, estado, telefone)
+                INSERT INTO usuario (CPF, nome_usuario, email_usuario, senha_usuario, data_nascimento_usuario, CEP, logradouro, EnderecoNumero, bairro, uf, cidade, telefone)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             `;
 
