@@ -3,7 +3,8 @@ import styled from "styled-components";
 import IconInstagram from '../assets/instagram.png';
 import IconLinkedin from '../assets/linkedin.png';
 import IconGithub from '../assets/github.png';
-import Logo from '../assets/logo-rdbrasil-1.png'; 
+import Logo from '../assets/logo-rdbrasil-1.png';
+import { Link } from "react-router-dom";
 
 const FooterContainer = styled.div`
   display: flex;
@@ -74,7 +75,7 @@ const FooterContainer = styled.div`
     .footer-icons {
       display: flex;
       align-items: center; 
-      margin-top: 60px; 
+      margin-top: 30px; 
       gap: 44px; 
       margin-right: 65px; 
     }
@@ -159,6 +160,24 @@ const Button = styled.button`
   }
 `;
 
+const StyledButton = styled(Link)`
+  padding: 10px 20px;
+  background-color: #B88162;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  font-family: "Roboto", sans-serif;
+  transition: background-color 0.3s;
+  margin-right: 60px;
+  margin-top: 80px;
+
+  &:hover {
+    background-color: #9d6d56;
+  }
+`;
+
 const Footer = () => {
   const [showButton, setShowButton] = useState(false);
 
@@ -200,7 +219,7 @@ const Footer = () => {
           </div>
         </div>
         <div className="social-media">
-          <h5>SIGA-NOS</h5>
+          <StyledButton to="/siga-nos">SIGA-NOS</StyledButton>
           <div className="footer-icons">
             <img src={IconInstagram} alt="Instagram" />
             <img src={IconLinkedin} alt="LinkedIn" />

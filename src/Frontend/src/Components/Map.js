@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import React, { useState } from 'react';
 import { GoogleMap, LoadScript, Marker, InfoWindow } from '@react-google-maps/api';
-require('dotenv').config();
 
 const MapContainer = styled.div`
 

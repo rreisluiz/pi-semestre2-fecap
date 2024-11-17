@@ -4,7 +4,7 @@ import styled from "styled-components";
 const ValoresContainer = styled.section`
   padding: 2rem;
   text-align: center;
-  background-color: #2C5431; /* Cor do fundo */
+  background-color: #2C5431;
   width: 100%;
   max-width: 1440px;
   margin: 0 auto;
@@ -23,6 +23,7 @@ const Titulo = styled.h2`
   font-family: 'Inter-BoldItalic', 'Helvetica';
   font-weight: bold;
   color: #fff;
+  text-decoration: underline;
 
   @media (max-width: 768px) {
     font-size: 1.5rem;
@@ -33,45 +34,55 @@ const ValoresFlex = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  gap: 1rem;
   margin: 44px 0;
 
   @media (max-width: 768px) {
     flex-direction: column;
-    margin: 20px 0;
+    gap: 1rem;
+  }
+`;
+
+const Card = styled.div`
+  background-color: #1e3d27;
+  border: 2px solid #fff; 
+  border-radius: 8px; 
+  padding: 1.5rem;
+  flex: 1;
+  text-align: left; 
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); 
+
+  @media (max-width: 768px) {
+    padding: 1rem;
   }
 `;
 
 const SubTitulo = styled.h3`
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   line-height: 1.5;
-  margin-left:190px;
-
-  text-align: justify;
   font-style: italic;
   font-family: 'Inter-BoldItalic', 'Helvetica';
   font-weight: bold;
   color: #fff;
-  margin-right: 44px;
+  margin-bottom: 1rem;
+  text-align: left; 
 
   @media (max-width: 768px) {
-    font-size: 1rem;
-    margin-right: 0;
+    font-size: 1.2rem;
   }
 `;
 
 const Texto = styled.p`
-  font-size: 1.2rem;
+  font-size: 1rem;
   line-height: 1.5;
   margin-bottom: 1rem;
-  text-align: justify;
-  margin-left:120px;
-  margin-right:44px;
   font-style: italic;
   font-family: 'Inter-BoldItalic', 'Helvetica';
   color: #fff;
+  text-align: left;
 
   @media (max-width: 768px) {
-    font-size: 1rem;
+    font-size: 0.9rem;
   }
 `;
 
@@ -80,18 +91,18 @@ const Valores = () => {
     <ValoresContainer>
       <Titulo>Valores</Titulo>
       <ValoresFlex>
-        <div>
+        <Card>
           <SubTitulo>Sustentabilidade:</SubTitulo>
           <Texto>Promover o reaproveitamento e o consumo consciente.</Texto>
-        </div>
-        <div>
+        </Card>
+        <Card>
           <SubTitulo>Comunidade:</SubTitulo>
           <Texto>Conectar pessoas que acreditam que juntos podemos fazer a diferença.</Texto>
-        </div>
-        <div>
+        </Card>
+        <Card>
           <SubTitulo>Respeito ao Planeta:</SubTitulo>
           <Texto>Valorizar e proteger os recursos naturais, garantindo um futuro melhor.</Texto>
-        </div>
+        </Card>
       </ValoresFlex>
     </ValoresContainer>
   );

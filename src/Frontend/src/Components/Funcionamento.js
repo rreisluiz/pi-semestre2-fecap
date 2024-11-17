@@ -4,10 +4,9 @@ import Img1 from '../assets/Img1.png';
 import Img2 from '../assets/Img2.png';
 import Img3 from '../assets/Img3.png';
 
-
 const FuncionamentoContainer = styled.section`
   background-color: #2C5431;
-  padding: 60px;
+  padding: 60px 20px;
   text-align: center;
   color: #ffff;
   font-style: italic;
@@ -15,21 +14,24 @@ const FuncionamentoContainer = styled.section`
   font-weight: bold;
   text-decoration: underline;
   font-size: 25px;
+
+  @media (max-width: 768px) {
+    padding: 40px 10px;
+    font-size: 22px;
+  }
 `;
 
 const StepsContainer = styled.div`
   display: flex;
-  justify-content: space-around;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
   margin-top: 20px;
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-    align-items: center;
-  }
 `;
 
 const Step = styled.div`
-  width: 20%;
+  flex: 1 1 calc(30% - 20px);
+  max-width: 300px;
   border: 1px solid #ddd;
   background: #f9f9f9;
   padding: 15px;
@@ -38,31 +40,40 @@ const Step = styled.div`
   margin: 10px;
 
   @media (max-width: 768px) {
-    width: 80%;
+    flex: 1 1 80%;
+  }
+
+  @media (max-width: 480px) {
+    flex: 1 1 100%;
   }
 `;
 
 const StepImage = styled.img`
-  width: 250px;
-  height: 240px;
-  border-radius:10px;
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
   margin-bottom: 10px;
-  margin-top: -10px;
 `;
 
 const StepTitle = styled.h3`
   margin-top: 5px;
   color: #2C5431;
   font-size: 20px;
-  text-decoration:underline;
+  text-decoration: underline;
+
+  @media (max-width: 768px) {
+    font-size: 18px;
+  }
 `;
 
 const StepText = styled.p`
-  font-size: 13px;
- 
+  font-size: 14px;
   color: #2C5431;
-  margin-bottom: -10px;
   margin-top: 5px;
+
+  @media (max-width: 768px) {
+    font-size: 13px;
+  }
 `;
 
 const Funcionamento = () => {

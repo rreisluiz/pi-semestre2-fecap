@@ -7,8 +7,8 @@ import PontosColeta from "./pages/PontosColeta";
 import NotFound from './Components/NotFound';
 import Produto from './pages/Produto';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import PontosColeta from "./pages/PontosColeta";
 import PaginaUsuario from "./pages/PaginaUsuario";
+import Siganos from './pages/Siganos';
 
 function App() {
   return (
@@ -24,6 +24,7 @@ function App() {
           <Route path='/item/:id' element={<Produto />} />
           <Route path="*" element={<NotFound />} /> {/* Rota 404 */}
           <Route path='/pagina-usuario' element={<PaginaUsuario />} />
+          <Route path='/siga-nos' element={<Siganos />} />
         </Routes>
       </Router>
     </div>
