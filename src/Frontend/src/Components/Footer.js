@@ -160,6 +160,13 @@ const Button = styled.button`
   }
 `;
 
+const Feedback = styled.a`
+  margin-bottom: 20px;
+  text-decoration: underline; 
+  cursor: pointer;
+  color: #ffff;
+`;
+
 const StyledButton = styled(Link)`
   padding: 10px 20px;
   background-color: #B88162;
@@ -214,7 +221,7 @@ const Footer = () => {
           <div className="column">
             <h5>Política de privacidade e termos de uso</h5>
             <h5>Meio de contato</h5>
-            <a href="mailto:RD.Brasil@gmail.com">RD.Brasil@gmail.com</a>
+            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=repasseco@gmail.com" target="_blank">repasseco@gmail.com</a>
             <h5>Suporte</h5>
             <h5>Endereço</h5>
             <p>Av. da Liberdade, 532 - Liberdade, São Paulo - SP 01502-001</p>
@@ -228,7 +235,7 @@ const Footer = () => {
             <img src={IconGithub} alt="GitHub" />
           </div>
           <div className="feedback-container">
-            <span href="#">Deixe seu feedback</span>
+          <Feedback href="https://mail.google.com/mail/?view=cm&fs=1&to=repasseco@gmail.com&su=Feedback%20&body=Descreva%20o%20que%20você%20achou%20da%20nossa%20proposta%20aqui.%20A%20RepassEco%20agradece!" target="_blank">Deixe seu feedback</Feedback>
             <span onClick={scrollToTop}>Voltar ao topo</span> 
           </div>
         </div>
