@@ -9,13 +9,14 @@ const Container = styled.div`
 `;
 
 const ProductListContainer = styled.div`
-  display: ${(props) => (props.isOpen ? "flex" : "none")};
-  flex-wrap: wrap;
+  display: ${(props) => (props.isOpen ? "flex" : "none")}; // Exibe a lista dependendo do estado isOpen
+  flex-wrap: wrap; // Permite que os itens quebrem para a próxima linha
   gap: 60px;
   justify-content: center;
   padding: 32px;
   margin-top: 20px;
 
+  // Responsividade
   @media (max-width: 768px) {
     padding: 16px;
     margin-top: 50px;
@@ -47,7 +48,7 @@ const TitleContainer = styled.div`
 const ImagemEstilizada = styled.img`
   width: 32px;
   height: 32px;
-  transform: ${(props) => (props.isOpen ? "rotate(180deg)" : "rotate(90deg)")};
+  transform: ${(props) => (props.isOpen ? "rotate(180deg)" : "rotate(90deg)")}; // Rotaciona dependendo do estado isOpen
   transition: transform 0.3s ease;
   margin-right: 10px; 
 
@@ -82,6 +83,7 @@ const Title = styled.h2`
   }
 `;
 
+// Lista de produtos que será mapeada para criar os cartões
 const products = [
   { id: 1, name: 'Produto 1', status: 'Descrição ...' },
   { id: 2, name: 'Produto 2', status: 'Descrição ...' },
@@ -94,19 +96,23 @@ const products = [
 function ProductList() {
   const [isListVisible, setIsListVisible] = useState(false);
 
+  // Função que alterna a visibilidade da lista
   const toggleListVisibility = () => {
     setIsListVisible(!isListVisible);
   };
 
   return (
     <Container>
+      {/* Título com a seta que alterna a visibilidade da lista */}
       <TitleContainer onClick={toggleListVisibility}>
         <ImagemEstilizada src={Seta} alt="Seta" isOpen={isListVisible} />
         <Title>Produtos Cadastrados</Title>
       </TitleContainer>
+      {/* Contêiner da lista de produtos, que é exibido com base no estado isListVisible */}
       <ProductListContainer isOpen={isListVisible}>
+        {/* Mapeia e exibe os produtos */}
         {products.map((product) => (
-          <ProductCard key={product.id} name={product.name} status={product.status} />
+          <ProductCard key={product.id} name={product.name} status={product.status} /> 
         ))}
       </ProductListContainer>
     </Container>

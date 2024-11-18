@@ -208,8 +208,9 @@ const SearchIcon = styled.svg`
 
 function NavBar() {
   const location = useLocation();
-
   const navigate = useNavigate();
+
+  // Função que redireciona para a página de login.
   const handlePerfilClick = () => {
     const token = localStorage.getItem('token');
     if (token) {

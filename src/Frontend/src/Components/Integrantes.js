@@ -23,6 +23,7 @@ const Title = styled.h1`
   font-style: italic;
 `;
 
+// Grid que organiza os cartões dos integrantes em duas colunas
 const Grid = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -38,7 +39,7 @@ const Card = styled.div`
   color: #fff;
   border-radius: 10px;
   padding: 15px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); // Sombra leve
 `;
 
 const ProfileImage = styled.img`
@@ -74,11 +75,12 @@ const Icon = styled.img`
   cursor: pointer;
 
   &:hover {
-    transform: scale(1.1);
+    transform: scale(1.1); // Aumenta o tamanho levemente
     transition: transform 0.2s;
   }
 `;
 
+// Componente principal que renderiza os integrantes
 const Integrantes = () => {
   const teamMembers = [
     {
@@ -128,7 +130,7 @@ const Integrantes = () => {
       <Title>Equipe</Title>
       <Grid>
         {teamMembers.map((member, index) => (
-          <Card key={index}>
+          <Card key={index}> {/* Cria um cartão para cada integrante */}
             <ProfileImage src={member.img} alt={member.name} />
             <Info>
               <Name>{member.name}</Name>

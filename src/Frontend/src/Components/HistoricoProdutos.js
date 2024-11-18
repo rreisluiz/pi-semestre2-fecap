@@ -47,7 +47,7 @@ const Title = styled.h2`
 const ImagemEstilizada = styled.img`
   width: 32px;
   height: 32px;
-  transform: ${(props) => (props.isOpen ? "rotate(180deg)" : "rotate(90deg)")};
+  transform: ${(props) => (props.isOpen ? "rotate(180deg)" : "rotate(90deg)")}; // Rotaciona baseado no estado
   transition: transform 0.3s ease;
   margin-right: 10px; 
 
@@ -69,7 +69,7 @@ const Subtitulos = styled.section`
   border-left: 4px solid #2C5431;
   background-color: #f9f9f9;
   border-radius: 8px;
-  display: ${(props) => (props.isOpen ? "block" : "none")}; /* Condicional para exibir/ocultar */
+  display: ${(props) => (props.isOpen ? "block" : "none")}; // Exibe ou oculta baseado no estado
 
   @media (max-width: 768px) {
     margin: 12px 16px;
@@ -100,10 +100,11 @@ const Sub = styled.h3`
 `;
 
 function HistoricoProdutos() {
-  const [isListVisible, setIsListVisible] = useState(false);
+  const [isListVisible, setIsListVisible] = useState(false); // Estado para controle de visibilidade
 
+  // Função que alterna a visibilidade
   const toggleListVisibility = () => {
-    setIsListVisible(!isListVisible);
+    setIsListVisible(!isListVisible); // Inverte o estado atual
   };
 
   return (

@@ -3,9 +3,13 @@ import styled from "styled-components";
 
 const Container = styled.div`
   margin: 110px 60px 100px 100px;
+
+  // Estilo para telas médias
   @media (max-width: 768px) {
     margin: 150px 20px 30px 20px; 
   }
+  
+  // Estilo para telas pequenas
   @media (max-width: 480px) {
     margin: 100px 10px 20px 10px; 
   }
@@ -18,9 +22,13 @@ const Title = styled.h2`
   color: #000000;
   text-decoration: underline;
   text-align: left; 
+
+  // Responsividade para telas médias
   @media (max-width: 768px) {
     font-size: 24px; 
   }
+
+  // Responsividade para telas pequenas
   @media (max-width: 480px) {
     font-size: 18px; 
   }
@@ -56,11 +64,13 @@ const Button = styled.div`
     transform: scale(0.98);
   }
 
+  // Responsividade para telas médias
   @media (max-width: 768px) {
     width: 120px; 
     height: 35px;
   }
 
+  // Responsividade para telas pequenas
   @media (max-width: 480px) {
     width: 100px; 
     height: 30px; 

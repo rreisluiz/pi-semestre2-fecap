@@ -179,16 +179,18 @@ const StyledButton = styled(Link)`
 `;
 
 const Footer = () => {
-  const [showButton, setShowButton] = useState(false);
+  const [showButton, setShowButton] = useState(false); // Estado para mostrar ou esconder o botão
 
+  // Função que faz a rolagem para o topo
   const scrollToTop = () => {
     const c = document.documentElement.scrollTop || document.body.scrollTop;
     if (c > 0) {
-      window.requestAnimationFrame(scrollToTop);
-      window.scrollTo(0, c - c / 10); 
+      window.requestAnimationFrame(scrollToTop); // Requisição de animação
+      window.scrollTo(0, c - c / 10); // Ajuste da rolagem
     }
   };
 
+  // Hook para exibir o botão baseado na rolagem
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 300) {
@@ -198,8 +200,8 @@ const Footer = () => {
       }
     };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll); // Adiciona listener de scroll
+    return () => window.removeEventListener("scroll", handleScroll); // Remove o listener ao desmontar
   }, []);
 
   return (
@@ -219,7 +221,7 @@ const Footer = () => {
           </div>
         </div>
         <div className="social-media">
-          <StyledButton to="/siga-nos">SIGA-NOS</StyledButton>
+          <StyledButton to="/siga-nos">SIGA-NOS</StyledButton> {/* Botão que redireciona para a página siga-nos */}
           <div className="footer-icons">
             <img src={IconInstagram} alt="Instagram" />
             <img src={IconLinkedin} alt="LinkedIn" />
@@ -227,7 +229,7 @@ const Footer = () => {
           </div>
           <div className="feedback-container">
             <span href="#">Deixe seu feedback</span>
-            <span onClick={scrollToTop}>Voltar ao topo</span>
+            <span onClick={scrollToTop}>Voltar ao topo</span> 
           </div>
         </div>
         <div className="footer-bottom">© 2024 RD Brasil.</div>

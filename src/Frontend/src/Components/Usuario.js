@@ -48,7 +48,7 @@ const ImagemEstilizada = styled.img`
   width: 32px;
   height: 32px;
   margin-right: 10px;
-  transform: ${(props) => (props.isOpen ? "rotate(180deg)" : "rotate(90deg)")};
+  transform: ${(props) => (props.isOpen ? "rotate(180deg)" : "rotate(90deg)")}; // Rotaciona o ícone conforme o estado
   transition: transform 0.3s ease;
 
   @media (max-width: 800px) {
@@ -63,7 +63,7 @@ const ImagemEstilizada = styled.img`
 `;
 
 const Form = styled.div`
-  display: ${(props) => (props.isOpen ? "flex" : "none")};
+  display: ${(props) => (props.isOpen ? "flex" : "none")}; // Exibe ou oculta com base no estado
   flex-wrap: wrap;
   justify-content: space-between;
   gap: 10px;
@@ -173,7 +173,6 @@ const EditButton = styled.button`
   }
 `;
 
-// Componente principal
 function Usuario(){
     // Estados para armazenar os dados do usuário
     const [userData, setUserData] = useState({
@@ -186,10 +185,12 @@ function Usuario(){
     senha: '',
   });
 
+  // Estado que controla se o formulário está visível ou não
   const [isContentVisible, setIsContentVisible] = useState(false);
 
+  // Função para alternar a visibilidade do formulário
   const toggleContentVisibility = () => {
-    setIsContentVisible(!isContentVisible);
+    setIsContentVisible(!isContentVisible); // Inverte o estado de visibilidade
   };
 
   return (
@@ -200,6 +201,7 @@ function Usuario(){
           <User>Usuário</User>
         </UserHeader>
         
+        {/* Formulário com os dados do usuário, aparece quando o estado 'isContentVisible' for true */}
         <Form isOpen={isContentVisible}>
           <NOME value={userData.nomeCompleto} readOnly placeholder="Nome Completo" />
           <TELEFONE value={userData.telefone} readOnly placeholder="Telefone" />
@@ -209,6 +211,7 @@ function Usuario(){
           <ENDERECO value={userData.endereco} readOnly placeholder="Endereço" />
           <SENHA type="password" value={userData.senha} readOnly placeholder="Senha" />
         </Form>
+        {/* Botão de editar que aparece quando o formulário está visível */}
         {isContentVisible && <EditButton>Editar</EditButton>}
       </ProfileSection>
     </Container>

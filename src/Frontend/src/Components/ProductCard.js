@@ -112,7 +112,7 @@ const Button = styled.button`
   border: none;
   cursor: pointer;
   color: white;
-  background-color: ${(props) => (props.delete ? '#A66A4F' : '#2C5431')};
+  background-color: ${(props) => (props.delete ? '#A66A4F' : '#2C5431')}; // Cor de fundo variável (verde ou marrom dependendo do tipo de botão)
 
   &:hover {
     opacity: 0.9;
@@ -133,7 +133,7 @@ const Button = styled.button`
 const ProductCard = ({ name, status }) => {
     return (
       <Card>
-        <ImagePlaceholder />
+        <ImagePlaceholder /> {/* Placeholder para a imagem do produto */}
         <InfoContainer>
           <ProductName>Nome</ProductName>
           <ProductStatus>Status</ProductStatus>
