@@ -34,9 +34,19 @@ const ButtonContainer = styled.div`
 
 const FlexContainer = styled.div`
   display: flex;
-  flex-direction: column;  
-  align-items: center;     
-  gap: 10em;               
+  flex-direction: column;
+  align-items: center;
+  gap: 10em;
+`;
+
+const DescriptionWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; 
+  width: 100%; 
+  min-height: 10em; 
+  padding: 1em;
+  box-sizing: border-box; 
 `;
 
 const Image = styled.img`
@@ -49,9 +59,8 @@ const Image = styled.img`
 `;
 
 const TextContainer = styled.div`
-  flex: 1;
-  margin-top: 76px;  /* Deslocando o texto para baixo */
-  margin-left: 40px;
+  margin-top: 2em; /* Ajuste para espaço entre imagem e texto */
+  text-align: left;
 `;
 
 const Title = styled.h1`
@@ -67,21 +76,21 @@ const Title = styled.h1`
   `;
 
 const Description = styled.p`
-  font-size: 13px;  
-  font-family:Arial, Helvetica, sans-serif;
-  color: black;  
-  line-height: 1.5;  
-  text-align: left;
+  font-size: 13px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: black;
+  line-height: 1.5;
   word-wrap: break-word;
   overflow-wrap: break-word;
   hyphens: auto;
-  margin-left: -35em; 
-  margin-top:-15em;
+  margin-top: -11em; /* cima */
+  margin-left: 30px; /* direita */
 `;
+
 
 const InterestedButton = styled.button`
   position: absolute;
-  margin-left:20em;
+  margin-left:50em;
   top: 12.3em;
   padding: 12px 20px;
   background-color: #2C5431;
@@ -209,7 +218,7 @@ const productData = {
   3: {
     id: 3,
     title: '3º Item',
-    description: 'Detalhes do 3º Item',
+    description:'Detalhes do 3º Item',
     images: [guitarra01, guitarra02, guitarra03],
   },
   4: {
@@ -269,17 +278,19 @@ function Produto() {
         </ButtonContainer>
 
         {product ? (
-          <FlexContainer>
-            <Image
-              src={product.images[activeImageIndex]} 
-              alt={`${product.title} - Imagem ${activeImageIndex + 1}`}
-            />
-            <TextContainer>
-              <Title>{product.title}</Title>
-              <Description>{product.description}</Description>
-            </TextContainer>
-            <InterestedButton>Interessado?</InterestedButton>
-          </FlexContainer>
+       <FlexContainer>
+       <Image
+         src={product.images[activeImageIndex]} 
+         alt={`${product.title} - Imagem ${activeImageIndex + 1}`}
+       />
+       <DescriptionWrapper>
+         <TextContainer>
+           <Title>{product.title}</Title>
+           <Description>{product.description}</Description>
+         </TextContainer>
+         <InterestedButton>Interessado?</InterestedButton>
+       </DescriptionWrapper>
+     </FlexContainer>
         ) : (
           <p>Produto não encontrado.</p>  
         )}
