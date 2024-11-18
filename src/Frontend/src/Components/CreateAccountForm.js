@@ -16,7 +16,6 @@ const CreateAccountForm = () => {
     bairro: "",
     uf: "",
     cidade: "",
-    estado: "",
     telefone: ""
   });
 

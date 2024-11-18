@@ -15,7 +15,6 @@ exports.createUser = async (req, res) => {
         bairro, 
         uf, 
         cidade, 
-        estado,
         telefone 
     } = req.body;
 
@@ -40,8 +39,8 @@ exports.createUser = async (req, res) => {
             }
 
             const query = `
-                INSERT INTO usuario (CPF, nome_usuario, email_usuario, senha_usuario, data_nascimento_usuario, logradouro, complemento, bairro, uf, cidade, estado, telefone)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                INSERT INTO usuario (CPF, nome_usuario, email_usuario, senha_usuario, data_nascimento_usuario, logradouro, complemento, bairro, uf, cidade, telefone)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             `;
 
             await db.query(query, [
@@ -56,7 +55,6 @@ exports.createUser = async (req, res) => {
                 bairro, 
                 uf, 
                 cidade,
-                estado,
                 telefone
             ]);
 

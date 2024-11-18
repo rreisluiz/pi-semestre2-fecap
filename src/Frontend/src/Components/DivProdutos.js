@@ -8,11 +8,10 @@ const Container = styled.div`
   margin: 7em auto;
   padding: 20px;
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* Alterado para 4 colunas por linha */
+  grid-template-columns: repeat(4, 1fr);
   gap: 6em 4em; 
   overflow-y: auto;
   `;
-
 
 const Card = styled.div`
   display: flex;
@@ -29,18 +28,18 @@ const ImageContainer = styled.div`
   height: 250px;
   position: relative;
   overflow: hidden;
-  margin-bottom: 40px; /* Adicione esta linha */
+  margin-bottom: 40px;
   border-radius:8px;
-  `;
+`;
 
 
-export const CarouselWrapper = styled.div`
+const CarouselWrapper = styled.div`
   width: 100%;
   height: 100%;
   position: relative;
   `;
 
-export const Image = styled.img`
+const Image = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -70,7 +69,7 @@ const Description = styled.h2`
   width: 100%; 
   max-width: 90%; 
   flex-shrink: 1; 
-  `;
+`;
 
 
 const Button = styled.button`
@@ -90,7 +89,7 @@ const Button = styled.button`
   }
 `;
 
-export const Trail = styled.div`
+const Trail = styled.div`
   display: flex;
   justify-content: center;
   position: absolute;
@@ -100,7 +99,7 @@ export const Trail = styled.div`
   z-index: 10;
 `;
 
-export const TrailDot = styled.div`
+const TrailDot = styled.div`
   width: 10px;
   height: 10px;
   margin: 0 5px;
@@ -110,7 +109,7 @@ export const TrailDot = styled.div`
 `;
 
 // Estilização das setas
-export const ArrowButton = styled.button`
+const ArrowButton = styled.button`
   position: absolute;
   top: 8em;
   transform: translateY(-50%); /* Ajusta a posição vertical para o meio da imagem */
@@ -163,11 +162,16 @@ function DivProdutos({ images }) {
     return () => intervals.forEach(clearInterval);
   }, [images]);
 
+  useEffect(() => {
+    setActiveImageIndexes(images.map(() => 0));
+  }, [images]);
+
   return (
     <Container>
       {images.map((item, productIndex) => (
         <Card key={item.id}>
           <ImageContainer>
+          {item.images && item.images.length > 0 ? ( // Renderização condicional
             <CarouselWrapper>
               <div
                 id={`carousel${item.id}`}
@@ -217,6 +221,9 @@ function DivProdutos({ images }) {
                 </ArrowButton>
               </div>
             </CarouselWrapper>
+          ) : (
+            <p>Carregando imagens...</p>
+          )}
 
             {/* Trilha de bolinhas */}
             <Trail>

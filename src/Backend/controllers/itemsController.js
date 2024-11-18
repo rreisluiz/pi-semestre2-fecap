@@ -100,11 +100,11 @@ exports.addItem = async (req, res) => {
         }
 
         const query = `
-            INSERT INTO item (foto_item, descricao_item, nome_item, categoria_item, estado_uso_item, cpf)
-            VALUES (?, ?, ?, ?, ?, ?)
+            INSERT INTO item (descricao_item, nome_item, categoria_item, estado_uso_item, cpf)
+            VALUES (?, ?, ?, ?, ?)
         `;
 
-        const [result] = await db.query(query, ["fototeste", descricao_item, nome_item, categoria_item, estado_uso_item, cpf]);
+        const [result] = await db.query(query, [descricao_item, nome_item, categoria_item, estado_uso_item, cpf]);
         console.log('Item inserido:', result);
 
         const itemId = result.insertId;
@@ -138,36 +138,44 @@ exports.addItem = async (req, res) => {
 exports.updateItem = async (req, res) => {
     try {
         const id_item = req.params.id;
-        const { foto_item, descricao_item, nome_item, categoria_item, estado_uso_item, cpf } = req.body;
+        const {nome_item, categoria_item, estado_uso_item, descricao_item} = req.body;
 
-        if (!id_item || !nome_item || !descricao_item || !categoria_item || !estado_uso_item || !foto_item) {
+        if (!id_item || !nome_item || !descricao_item || !categoria_item || !estado_uso_item) {
             res.status(400).json({ message: 'Todos os campos obrigatórios devem ser preenchidos.' });
         }
 
         const query = `
             UPDATE
                 item 
-            SET
-                foto_item = ?, 
-                descricao_item = ?,
+            SET 
                 nome_item = ?,
+                descricao_item = ?,
                 categoria_item = ?,
                 estado_uso_item = ?
             WHERE 
                 id_item = ?
         `;
 
-        await db.query(query, [foto_item, descricao_item, nome_item, categoria_item, estado_uso_item, id_item], (err, result) => {});
+        const [result] = await db.query(query, [nome_item, descricao_item, categoria_item, estado_uso_item, id_item]);
 
-        res.status(200).json({ message: 'Item atualizado com sucesso!' });
+        res.status(200).json({ message: 'Item atualizado com sucesso!: ' });
     } catch (error) {
-        console.error('Erro ao atualizar item:', err);
+        console.error('Erro ao atualizar item:', error);
         res.status(500).json({ message: 'Erro ao atualizar item. Tente novamente mais tarde.' });
     }  
 }
 
 exports.deleteItem = async (req, res) => {
     const itemId = req.params.id;
+
+    const queryImages = `
+        DELETE FROM
+            imagens
+        WHERE 
+            id_item = ?
+    `;
+
+    const responseImages = await db.query(queryImages, [itemId]);
 
     const query = `
         DELETE FROM
@@ -177,6 +185,7 @@ exports.deleteItem = async (req, res) => {
     `;
 
     const response = await db.query(query, [itemId]);
+
 
     res.status(200).json(response);   
 }

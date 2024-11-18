@@ -1,17 +1,19 @@
 import React, { useState } from "react";
+import DeletarConta from "../Components/DeletarConta";
 import styled from "styled-components";
-import Logo from '../assets/icon_seta.png'; 
+import Seta from '../assets/icon_seta.png'; 
 
 const Container = styled.div`
-  padding-top: 470px;
+  padding-top: 250px;
+  margin: 0 auto;
+  width: 80%;
 `;
 
 const ProfileSection = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  margin: 20px auto;
-  width: 90%;
+  width: 100%;
 
   @media (max-width: 800px) {
     width: 95%;
@@ -22,6 +24,14 @@ const UserHeader = styled.div`
   display: flex;
   align-items: center;
   cursor: pointer;
+
+  @media (max-width: 768px) {
+    margin-left: 40px;
+  }
+
+  @media (max-width: 480px) {
+    margin-left: 20px;
+  }
 `;
 
 const User = styled.h2`
@@ -30,7 +40,6 @@ const User = styled.h2`
   font-weight: 700;
   font-size: 32px;
   line-height: 39px;
-  color: #000000;
   text-decoration: underline;
   margin: 0 10px 0 0;
   text-align: left;
@@ -144,18 +153,6 @@ const ENDERECO = styled.input`
   text-align: left;
 `;
 
-const SENHA = styled.input`
-  flex: 1;
-  min-width: 250px;
-  padding: 10px;
-  border: none;
-  border-radius: 5px;
-  background-color: #2E583A;
-  color: #fff;
-  font-size: 16px;
-  text-align: left;
-`;
-
 const EditButton = styled.button`
   margin-top: 20px;
   padding: 10px 20px;
@@ -189,13 +186,13 @@ function Usuario({user}){
 
     return (
       <Container>
-        <ProfileSection>
           <UserHeader onClick={toggleContentVisibility}>
-            <ImagemEstilizada src={Logo} alt="Logo RepassEco" isOpen={isContentVisible} />
+            <ImagemEstilizada src={Seta} alt="Seta" isOpen={isContentVisible} />
             <User>Usuário</User>
           </UserHeader>
           
-          <Form isOpen={isContentVisible}>
+        <ProfileSection>
+          <Form isOpen={isContentVisible} readOnly>
             <NOME value={userData.nome_usuario} readOnly placeholder="Nome Completo" />
             <TELEFONE value={userData.telefone} readOnly placeholder="Telefone" />
             <EMAIL value={userData.email_usuario} readOnly placeholder="E-mail" />
@@ -205,7 +202,8 @@ function Usuario({user}){
             <ENDERECO value={userData.bairro} readOnly placeholder="Endereço" />
             <ENDERECO value={userCidade} readOnly placeholder="Endereço" />
           </Form>
-          {/* {isContentVisible && <EditButton>Editar</EditButton>} */}
+          {isContentVisible && <EditButton>Editar</EditButton>}
+          {/* {isContentVisible && <DeletarConta user={userData.CPF}/>} */}
         </ProfileSection>
       </Container>
     );

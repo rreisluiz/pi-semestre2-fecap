@@ -7,17 +7,18 @@ import axios from 'axios'
 
 
 const Container = styled.div`
-  margin-top: 100px;
-  margin-left: -14px;
+  padding-top: 20px;
+  margin: 0 auto;
+  width: 80%;
 `;
 
 const ProductListContainer = styled.div`
   display: ${(props) => (props.isOpen ? "flex" : "none")};
   flex-wrap: wrap;
-  gap: 60px;
-  justify-content: center;
-  padding: 32px;
+  gap: 30px;
+  padding-top: 32px;
   margin-top: 20px;
+  justify-content: space-around;
 
   @media (max-width: 768px) {
     padding: 16px;
@@ -36,7 +37,6 @@ const TitleContainer = styled.div`
   display: flex;
   align-items: center;
   cursor: pointer;
-  margin-left: 80px;
 
   @media (max-width: 768px) {
     margin-left: 40px;
@@ -134,8 +134,8 @@ function ProductList({user}) {
       <TitleContainer onClick={toggleListVisibility}>
         <ImagemEstilizada src={Seta} alt="Seta" isOpen={isListVisible} />
         <Title>Produtos Cadastrados</Title>
-        </TitleContainer>
-        <ProductListContainer isOpen={isListVisible}>
+      </TitleContainer>
+      <ProductListContainer isOpen={isListVisible}>
         {userItems.map((userItem, itemIndex) => (
           <ProductCard key={itemIndex} item={userItem}/>
         ))}

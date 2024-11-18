@@ -41,7 +41,6 @@ function PaginaUsuario(){
             <Usuario user={userData}/>
             <ProdutosCadastrados user={userData.CPF}/>
             {/* <HistoricoProdutos user={userData.CPF}/> */}
-            <DeletarConta user={userData.CPF}/>
             <Footer/>
         </div>
     )
