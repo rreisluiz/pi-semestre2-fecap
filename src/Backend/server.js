@@ -1,13 +1,11 @@
 require('dotenv').config();
 const express = require('express');
 const usersRoutes = require('./routes/usersRoutes');
-const productsRoutes = require('./routes/itemsRoutes')
+const itemRoutes = require('./routes/itemsRoutes')
 const interestsRoutes = require('./routes/interestsRoutes')
-const usersController = require('./controllers/usersController');
-const itemsController = require('./controllers/itemsController');
-const { extractToken, authMiddleware } = require('./authMiddleware');
 const app = express();
 const cors = require('cors');
+const path = require('path');
 require('dotenv').config();
 
 // Middleware para processar dados no formato JSON
@@ -42,15 +40,12 @@ app.options('/items/add', cors({
     allowedHeaders: ['Content-Type', 'Authorization'] // Headers permitidos
 }));
 
-app.post('/users/login', usersController.loginUser);
-app.get('/users/nome', extractToken, authMiddleware, usersController.getNomeUsuario);
-app.post('/users/add', usersController.createUser);
-app.use('/items', productsRoutes);
+
+app.use('/items', itemRoutes);
 app.use('/interests', interestsRoutes);
-app.get('/pagina-usuario', authMiddleware, (req, res) => {
-    // Lógica para lidar com a requisição GET para /pagina-usuario
-    res.send('Página do usuário'); 
-  });
-app.post('/items/add', extractToken, authMiddleware, itemsController.addItem); 
+app.use('/users', usersRoutes);
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+
 
 

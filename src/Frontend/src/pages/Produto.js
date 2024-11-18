@@ -4,39 +4,36 @@ import Navbar from "../Components/Navbar";
 import Footer from '../Components/Footer';
 import DivProdutos from '../Components/DivProdutos';
 import styled from 'styled-components';
-import guitarra01 from '../assets/Produtos_Ficticios/guitarra01.jpg';
-import guitarra02 from '../assets/Produtos_Ficticios/guitarra02.jpg';
-import guitarra03 from '../assets/Produtos_Ficticios/guitarra03.jpg';
-import Controle01 from '../assets/Produtos_Ficticios/Controle01.jpg';
-import Controle02 from '../assets/Produtos_Ficticios/Controle02.jpg';
-import Controle03 from '../assets/Produtos_Ficticios/Controle03.jpg';
+import axios from 'axios';
+import { useApiUrl } from '../context/ApiContext';
 
 const Container = styled.div`
-  transform: translateX(-280px); 
-  width: 80em;
-  margin: 90px auto;
+  width: 100%;
+  padding: 50px 0;
+  background-color: #2C5431; /* rgba(120, 120, 120, 0.2); */
+`;
+
+const ItemContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  margin: 0 auto;
   padding: 20px;
-  margin-left:20em;
-  top: 170px;
   border-radius: 20px;
   background: white; /* rgba(120, 120, 120, 0.2); */
   box-shadow: 0px 0px 32px -8px rgba(12, 12, 13, 0.4);
-  
-`;
-
+`
 
 const ButtonContainer = styled.div`
-  margin-bottom: 30px; 
   display: flex;
   justify-content: center;
-  width: 100%;
 `;
 
 const FlexContainer = styled.div`
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10em;
+  flex-direction: row;
+  margin-top: 20px;
+  gap: 10px;
 `;
 
 const DescriptionWrapper = styled.div`
@@ -44,36 +41,29 @@ const DescriptionWrapper = styled.div`
   flex-direction: column;
   justify-content: space-between; 
   width: 100%; 
-  min-height: 10em; 
+  min-height: 20em; 
   padding: 1em;
   box-sizing: border-box; 
 `;
 
 const Image = styled.img`
-  width: 50%;
-  max-height: 25em;
+  width: 100%;
+  max-height: 40em;
   object-fit: cover;
   border-radius: 20px;
-  margin-top: 90px;  /* Deslocando a imagem para baixo */
-  margin-left:-33em;
+  border-style: groove;
 `;
 
 const TextContainer = styled.div`
-  margin-top: 2em; /* Ajuste para espaço entre imagem e texto */
   text-align: left;
 `;
 
 const Title = styled.h1`
   font-family:Arial, Helvetica, sans-serif;
   font-style:bold;
-  position: absolute;
-  top: 4em;
-  left: -6px;
   color: #000;
   font-size: 2rem;
-  margin: 0;
-  margin-left:80px;
-  `;
+`;
 
 const Description = styled.p`
   font-size: 13px;
@@ -83,21 +73,15 @@ const Description = styled.p`
   word-wrap: break-word;
   overflow-wrap: break-word;
   hyphens: auto;
-  margin-top: -11em; /* cima */
-  margin-left: 30px; /* direita */
 `;
 
-
 const InterestedButton = styled.button`
-  position: absolute;
-  margin-left:50em;
-  top: 12.3em;
   padding: 12px 20px;
   background-color: #2C5431;
   color: white;
   border: none;
   border-radius: 8px;
-  font-size: 16px;
+  font-size: 1.5em;
   font-weight: bold;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -109,8 +93,7 @@ const InterestedButton = styled.button`
 `;
 
 const AnimatedButton = styled.button`
-  transform: translateX(-32.4em);
-  position: relative;
+  transform: translateX(-38.6em);
   display: flex;
   align-items: center;
   gap: 4px;
@@ -195,66 +178,97 @@ const AnimatedButton = styled.button`
   }
 `;
 
-const productData = {
-  1: {
-    id: 1,
-    title: '1º Item',
-    description: 'Detalhes do 1º Item',
-    images: [guitarra01, guitarra02, guitarra03],
-  },
-  2: {
-    id: 2,
-    title: 'Controle PS4',
-    description: (
-      <>
-          Controle PS4 Usado - Excelente Estado! <br />
-          Está procurando um controle de PS4 em ótimo estado e com preço acessível? Temos o que você precisa!<br />
-          Nosso controle usado oferece toda a funcionalidade de um controle novo, com desempenho de alta qualidade.<br />
-          Ele foi cuidadosamente verificado, garantindo que você tenha uma experiência de jogo incrível, sem comprometer seu bolso.
-      </>
-    ),
-    images: [Controle01, Controle02, Controle03],
-  },
-  3: {
-    id: 3,
-    title: '3º Item',
-    description:'Detalhes do 3º Item',
-    images: [guitarra01, guitarra02, guitarra03],
-  },
-  4: {
-    id: 4, 
-    title: '4º Item',
-    description: 'Detalhes do 4º Item',
-    images: [guitarra01, guitarra02, guitarra03],
-  },
-  5: {
-    id: 5, 
-    title: '5º Item',
-    description: 'Detalhes do 5º Item',
-    images: [guitarra01, guitarra02, guitarra03],
-  },
-  6: {
-    id: 6, 
-    title: '6º Item',
-    description: 'Detalhes do 6º Item',
-    images: [guitarra01, guitarra02, guitarra03],
-  },
-};
+// const productData = {
+//   1: {
+//     id: 1,
+//     title: '1º Item',
+//     description: 'Detalhes do 1º Item',
+//     images: [guitarra01, guitarra02, guitarra03],
+//   },
+//   2: {
+//     id: 2,
+//     title: 'Controle PS4',
+//     description: (
+//       <>
+//           Controle PS4 Usado - Excelente Estado! <br />
+//           Está procurando um controle de PS4 em ótimo estado e com preço acessível? Temos o que você precisa!<br />
+//           Nosso controle usado oferece toda a funcionalidade de um controle novo, com desempenho de alta qualidade.<br />
+//           Ele foi cuidadosamente verificado, garantindo que você tenha uma experiência de jogo incrível, sem comprometer seu bolso.
+//       </>
+//     ),
+//     images: [Controle01, Controle02, Controle03],
+//   },
+//   3: {
+//     id: 3,
+//     title: '3º Item',
+//     description:'Detalhes do 3º Item',
+//     images: [guitarra01, guitarra02, guitarra03],
+//   },
+//   4: {
+//     id: 4, 
+//     title: '4º Item',
+//     description: 'Detalhes do 4º Item',
+//     images: [guitarra01, guitarra02, guitarra03],
+//   },
+//   5: {
+//     id: 5, 
+//     title: '5º Item',
+//     description: 'Detalhes do 5º Item',
+//     images: [guitarra01, guitarra02, guitarra03],
+//   },
+//   6: {
+//     id: 6, 
+//     title: '6º Item',
+//     description: 'Detalhes do 6º Item',
+//     images: [guitarra01, guitarra02, guitarra03],
+//   },
+// };
 
 function Produto() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const product = productData[id];
+  const apiUrl = useApiUrl();
+  const [item, setItem] = useState();
   const [activeImageIndex, setActiveImageIndex] = useState(0);
 
+  const [items, setItems] = useState([]);
+
   useEffect(() => {
-    if (product && product.images) {
+    const fetchItems = async () => {
+      try {
+        const response = await axios.get(`${apiUrl}/items/`)
+        setItems(response.data)
+        console.log(response.data)
+      } catch (error) {
+        console.error('Erro ao buscar itens: ', error)
+      }
+    };
+
+    fetchItems();
+  }, []);
+
+  useEffect(() => {
+    const fetchItems = async () => {
+      try {
+        const response = await axios.get(`${apiUrl}/items/id/${id}`)
+        setItem(response.data[0])
+        console.log(response.data)
+      } catch (error) {
+        console.error('Erro ao buscar itens: ', error)
+      }
+    };
+
+    fetchItems();
+  }, [id]);
+
+  useEffect(() => {
+    if (item && item.images) {
       const interval = setInterval(() => {
-        setActiveImageIndex((prevIndex) => (prevIndex + 1) % product.images.length);
+        setActiveImageIndex((prevIndex) => (prevIndex + 1) % item.images.length);
       }, 3000);
       return () => clearInterval(interval);
     }
-  }, [product]);
+  }, [item]);
 
   const handleBack = () => {
     navigate(-1);
@@ -264,38 +278,47 @@ function Produto() {
     <div>
       <Navbar />
       <Container>
-        <ButtonContainer>
-          <AnimatedButton onClick={handleBack}>
-            <svg className="arr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-              <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z" />
-            </svg>
-            <span className="text">VOLTAR</span>
-            <span className="circle"></span>
-            <svg className="arr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-              <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z" />
-            </svg>
-          </AnimatedButton>
-        </ButtonContainer>
-
-        {product ? (
-       <FlexContainer>
-       <Image
-         src={product.images[activeImageIndex]} 
-         alt={`${product.title} - Imagem ${activeImageIndex + 1}`}
-       />
-       <DescriptionWrapper>
-         <TextContainer>
-           <Title>{product.title}</Title>
-           <Description>{product.description}</Description>
-         </TextContainer>
-         <InterestedButton>Interessado?</InterestedButton>
-       </DescriptionWrapper>
-     </FlexContainer>
-        ) : (
-          <p>Produto não encontrado.</p>  
-        )}
+        <ItemContainer>
+          <ButtonContainer>
+            <AnimatedButton onClick={handleBack}>
+              <svg className="arr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z" />
+              </svg>
+              <span className="text">VOLTAR</span>
+              <span className="circle"></span>
+              <svg className="arr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z" />
+              </svg>
+            </AnimatedButton>
+          </ButtonContainer>
+            {item ? (
+          <FlexContainer>
+            {item.images && item.images.length > 0 ? (
+          <Image
+            src={`${apiUrl}/uploads/${item.images[activeImageIndex].foto}`} 
+            alt={`${item.nome_item} - Imagem ${activeImageIndex + 1}`}
+          />
+            ) : (
+            <Image
+            src='https://placehold.co/600x400/orange/white' 
+            />
+            )}
+          <DescriptionWrapper>
+            <TextContainer>
+              <Title><strong>{item.nome_item}</strong></Title>
+              <Title>Categoria: <strong>{item.categoria_item}</strong></Title>
+              <Title>Estado de uso: <strong>{item.estado_uso_item}</strong></Title>
+              <Description>{item.descricao_item}</Description>
+            </TextContainer>
+            <InterestedButton>Interessado?</InterestedButton>
+          </DescriptionWrapper>
+          </FlexContainer>
+            ) : (
+              <p>Produto não encontrado.</p>  
+            )}
+        </ItemContainer>
       </Container>
-      <DivProdutos images={Object.values(productData).filter(p => p.id !== parseInt(id))} />
+      <DivProdutos images={Object.values(items).filter(p => p.id !== parseInt(id))} />
       <Footer />
     </div>
   );

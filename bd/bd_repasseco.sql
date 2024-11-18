@@ -29,6 +29,14 @@ constraint PKitem primary key(id_item),
 constraint FKcpf foreign key(CPF) references usuario(CPF)
 );
 
+create table imagens(
+	id_foto int auto_increment,
+    foto varchar(5000),
+    id_item int,
+    constraint PKid primary key(id_foto),
+	constraint FKid_item foreign key(id_item) references item(id_item)
+);
+
 create table interesse(
 id_interesse int auto_increment,
 data_interesse date not null,

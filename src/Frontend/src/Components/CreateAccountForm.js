@@ -6,13 +6,18 @@ import { useNavigate } from "react-router-dom"; // Importando useNavigate
 const CreateAccountForm = () => {
   const navigate = useNavigate(); // Usando useNavigate
   const [formData, setFormData] = useState({
-    nome_usuario: "",
-    data_nascimento_usuario: "",
-    telefone: "",
     CPF: "",
+    nome_usuario: "",
     email_usuario: "",
-    logradouro: "",
     senha_usuario: "",
+    data_nascimento_usuario: "",
+    logradouro: "",
+    complemento: "",
+    bairro: "",
+    uf: "",
+    cidade: "",
+    estado: "",
+    telefone: ""
   });
 
   function validarDataNascimento(data) {
@@ -122,7 +127,7 @@ const CreateAccountForm = () => {
         const response = await axios.get(`https://viacep.com.br/ws/${cep}/json/`);
         setFormData({
           ...formData,
-          CEP: cep,
+          // CEP: cep,
           logradouro: response.data.logradouro,
           bairro: response.data.bairro,
           cidade: response.data.localidade,
@@ -178,7 +183,7 @@ const CreateAccountForm = () => {
 
     } catch (error) {
         console.error("Erro ao cadastrar usuário:", error);
-        alert("Erro ao cadastrar o usuário. Tente novamente.");
+        alert("Erro ao cadastrar o usuário. Tente novamente." + error);
     }
 };
 
@@ -224,10 +229,10 @@ return (
           </FormField>
 
           <FormField>
-            <Label htmlFor="EnderecoNumero">Número</Label>
+            <Label htmlFor="EnderecoNumero">Complemento</Label>
             <InputBase
               type="text"
-              id="EnderecoNumero"
+              id="complemento"
               placeholder="Complemento"
               value={formData.complemento}
               onChange={handleChange}

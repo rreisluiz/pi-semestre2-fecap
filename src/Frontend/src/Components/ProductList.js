@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import ProductCard from "./ProductCard";
 import Seta from '../assets/icon_seta.png';
+import { useApiUrl } from "../context/ApiContext";
+import axios from 'axios'
+
 
 const Container = styled.div`
   margin-top: 100px;
@@ -82,17 +85,45 @@ const Title = styled.h2`
   }
 `;
 
-const products = [
-  { id: 1, name: 'Produto 1', status: 'Descrição ...' },
-  { id: 2, name: 'Produto 2', status: 'Descrição ...' },
-  { id: 3, name: 'Produto 3', status: 'Descrição ...' },
-  { id: 4, name: 'Produto 4', status: 'Descrição ...' },
-  { id: 5, name: 'Produto 5', status: 'Descrição ...' },
-  { id: 6, name: 'Produto 6', status: 'Descrição ...' },
-];
-
-function ProductList() {
+function ProductList({user}) {
   const [isListVisible, setIsListVisible] = useState(false);
+  const [userItems, setUserItems] = useState([]);
+  const apiUrl = useApiUrl();
+  
+  // useEffect(() => {
+  //   const fetchItems = async () => {
+  //     try {
+  //       const response = await axios.get(`${apiUrl}/items/cpf/${user}`)
+  //       setUserItems(response.data)
+  //       console.log(response.data)
+  //     } catch (error) {
+  //       console.error('Erro ao buscar itens: ', error)
+  //     }
+  //   };
+
+  //   fetchItems();
+  // }, [user]);
+
+  useEffect(() => {
+    const fetchUserItems = () => {
+        const token = localStorage.getItem('token');
+    
+        if (token) {
+          axios.get(`${apiUrl}/items/cpf/${user}`, { // Rota para obter o nome do usuário
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          })
+          .then(response => {
+            setUserItems(response.data); // Define o nome do usuário no estado
+          })
+          .catch(error => {
+            console.error('Erro ao obter itens do usuário:', error);
+          });
+        }
+    }
+    fetchUserItems();
+  }, [user]); // Executa o efeito apenas uma vez, quando o componente é montado
 
   const toggleListVisibility = () => {
     setIsListVisible(!isListVisible);
@@ -103,10 +134,10 @@ function ProductList() {
       <TitleContainer onClick={toggleListVisibility}>
         <ImagemEstilizada src={Seta} alt="Seta" isOpen={isListVisible} />
         <Title>Produtos Cadastrados</Title>
-      </TitleContainer>
-      <ProductListContainer isOpen={isListVisible}>
-        {products.map((product) => (
-          <ProductCard key={product.id} name={product.name} status={product.status} />
+        </TitleContainer>
+        <ProductListContainer isOpen={isListVisible}>
+        {userItems.map((userItem, itemIndex) => (
+          <ProductCard key={itemIndex} item={userItem}/>
         ))}
       </ProductListContainer>
     </Container>

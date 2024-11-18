@@ -1,4 +1,4 @@
-const db = require('../db')
+const db = require('../config/db')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
@@ -9,17 +9,18 @@ exports.createUser = async (req, res) => {
         email_usuario, 
         senha_usuario, 
         data_nascimento_usuario, 
-        CEP, 
+        // CEP, 
         logradouro, 
-        EnderecoNumero, 
+        complemento, 
         bairro, 
         uf, 
         cidade, 
+        estado,
         telefone 
     } = req.body;
 
     // Verifica se todos os dados obrigatórios foram enviados
-    if (!CPF || !nome_usuario || !email_usuario || !senha_usuario || !data_nascimento_usuario || !CEP || !EnderecoNumero) {
+    if (!CPF || !nome_usuario || !email_usuario || !senha_usuario || !data_nascimento_usuario || !complemento) {
         return res.status(400).json({ message: 'Todos os campos obrigatórios devem ser preenchidos.' });
     }
 
@@ -39,7 +40,7 @@ exports.createUser = async (req, res) => {
             }
 
             const query = `
-                INSERT INTO usuario (CPF, nome_usuario, email_usuario, senha_usuario, data_nascimento_usuario, CEP, logradouro, EnderecoNumero, bairro, uf, cidade, telefone)
+                INSERT INTO usuario (CPF, nome_usuario, email_usuario, senha_usuario, data_nascimento_usuario, logradouro, complemento, bairro, uf, cidade, estado, telefone)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             `;
 
@@ -49,12 +50,13 @@ exports.createUser = async (req, res) => {
                 email_usuario, 
                 hashedPassword, 
                 data_nascimento_usuario, 
-                CEP, 
+                // CEP, 
                 logradouro, 
-                EnderecoNumero, 
+                complemento, 
                 bairro, 
                 uf, 
-                cidade, 
+                cidade,
+                estado,
                 telefone
             ]);
 
@@ -65,8 +67,6 @@ exports.createUser = async (req, res) => {
         return res.status(500).json({ message: 'Erro ao cadastrar o usuário. Tente novamente mais tarde.' });
     }
 };
-
-
 
 function generateToken(user) {
     // 1. Definir a payload do token (dados do usuário)
@@ -174,7 +174,7 @@ exports.getNomeUsuario = async (req, res) => {
   
       const cpf = decoded.id; // Obtém o CPF do token
   
-      const query = 'SELECT nome_usuario FROM usuario WHERE CPF = ?';
+      const query = 'SELECT * FROM usuario WHERE CPF = ?';
       const [rows] = await db.query(query, [cpf]);
   
       if (rows.length === 0) {
@@ -182,11 +182,14 @@ exports.getNomeUsuario = async (req, res) => {
       }
   
       const nomeUsuario = rows[0].nome_usuario;
-      res.status(200).json({ nome: nomeUsuario });
+      res.status(200).json(rows);
+
+      console.log(rows);
+      
   
     } catch (error) {
-      console.error('Erro ao obter nome do usuário:', error);
-      res.status(500).json({ message: 'Erro ao obter nome do usuário' });
+      console.error('Erro ao obter dados do usuário:', error);
+      res.status(500).json({ message: 'Erro ao obter dados do usuário' });
     }
   };
   

@@ -1,5 +1,7 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
+import {CarouselWrapper, Image, ArrowButton, Trail, TrailDot} from '../Components/DivProdutos'
 import styled from "styled-components";
+import { useApiUrl } from "../context/ApiContext";
 
 const Card = styled.div`
   display: flex;
@@ -28,9 +30,8 @@ const Card = styled.div`
   }
 `;
 
-const ImagePlaceholder = styled.div`
+const ImagePlaceholder = styled.img`
   width: 100%;
-  height: auto;
   aspect-ratio: 13 / 9; 
   background-color: #6c6c6c;
   border-radius: 8px;
@@ -130,14 +131,21 @@ const Button = styled.button`
   }
 `;
 
-const ProductCard = ({ name, status }) => {
+const ProductCard = ({item}) => {
+  const apiUrl = useApiUrl();
+
     return (
       <Card>
-        <ImagePlaceholder />
+        {item.images && item.images.length > 0 ? (
+        <ImagePlaceholder src={`${apiUrl}/uploads/${item.images[0].foto}`}/>
+        ) : (
+          <ImagePlaceholder/>
+        )
+        }  
         <InfoContainer>
-          <ProductName>Nome</ProductName>
-          <ProductStatus>Status</ProductStatus>
-          <ProductDescrition><br />Descrição</ProductDescrition>
+          <ProductName>ID: {item.id} - {item.nome_item}</ProductName>
+          <ProductStatus>{item.categoria_item}</ProductStatus>
+          <ProductDescrition><br />{item.descricao_item}</ProductDescrition>
           <ButtonContainer>
             <Button>Editar</Button>
             <Button delete>Deletar</Button>

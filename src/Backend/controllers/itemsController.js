@@ -1,24 +1,77 @@
-const db = require('../db')
+const db = require('../config/db')
 const jwt = require('jsonwebtoken');
 
 exports.getAllItems = async (req, res) => {
     const query = `SELECT * FROM item;`;
     const response = await db.query(query);
-    res.status(200).json(response[0]);
+
+    const items = await Promise.all(response[0].map( async (item) => {
+        const query = `SELECT foto FROM imagens WHERE id_item = ?;`;
+        const [images] = await db.query(query, [item.id_item]);
+
+        return {
+            id: item.id_item,
+            nome_item: item.nome_item,
+            descricao_item: item.descricao_item,
+            categoria_item: item.categoria_item,
+            estado_uso_item: item.estado_uso_item,
+            images: images
+        }
+    }));
+
+    console.log(items)
+
+    res.status(200).json(items);
 }
 
 exports.getItemById = async (req, res) => {
     const itemId = req.params.id;
     const query = `SELECT * FROM item WHERE id_item = ?;`;
     const response = await db.query(query, [itemId]);
-    res.status(200).json(response[0]);
+
+    const items = await Promise.all(response[0].map( async (item) => {
+        const query = `SELECT foto FROM imagens WHERE id_item = ?;`;
+        const [images] = await db.query(query, [item.id_item]);
+
+        return {
+            id: item.id_item,
+            nome_item: item.nome_item,
+            descricao_item: item.descricao_item,
+            categoria_item: item.categoria_item,
+            estado_uso_item: item.estado_uso_item,
+            images: images
+        }
+    }));
+
+    console.log(items);
+    console.log(items.images)
+
+    res.status(200).json(items);
 }
 
 exports.getItemsByUser = async (req, res) => {
     const cpf = req.params.cpf;
-    const query = `SELECT * FROM item WHERE cpf = ?;`;
+    const query = `SELECT * FROM item WHERE CPF = ?;`;
     const response = await db.query(query, [cpf]);
-    res.status(200).json(response[0]);
+
+    const items = await Promise.all(response[0].map( async (item) => {
+        const query = `SELECT foto FROM imagens WHERE id_item = ?;`;
+        const [images] = await db.query(query, [item.id_item]);
+
+        return {
+            id: item.id_item,
+            nome_item: item.nome_item,
+            descricao_item: item.descricao_item,
+            categoria_item: item.categoria_item,
+            estado_uso_item: item.estado_uso_item,
+            images: images
+        }
+    }));
+    
+    console.log(items)
+    console.log(items.images)
+    
+    res.status(200).json(items);
 }
 
 exports.addItem = async (req, res) => {
@@ -36,18 +89,35 @@ exports.addItem = async (req, res) => {
         console.log('Token decodificado:', decoded);
 
         const cpf = decoded.id;
-        const { foto_item, descricao_item, nome_item, categoria_item, estado_uso_item } = req.body;
+        const { descricao_item, nome_item, categoria_item, estado_uso_item, images } = req.body;
 
-        if (!foto_item || !descricao_item || !nome_item || !categoria_item || !estado_uso_item) {
+        if (!descricao_item || !nome_item || !categoria_item || !estado_uso_item) {
             return res.status(400).json({ message: 'Campos obrigatórios ausentes.' });
+        }
+
+        if (!req.files) {
+            return res.status(400).json({ message: 'Imagens não encontradas!' });
         }
 
         const query = `
             INSERT INTO item (foto_item, descricao_item, nome_item, categoria_item, estado_uso_item, cpf)
             VALUES (?, ?, ?, ?, ?, ?)
         `;
-        const response = await db.query(query, [foto_item, descricao_item, nome_item, categoria_item, estado_uso_item, cpf]);
-        console.log('Item inserido:', response);
+
+        const [result] = await db.query(query, ["fototeste", descricao_item, nome_item, categoria_item, estado_uso_item, cpf]);
+        console.log('Item inserido:', result);
+
+        const itemId = result.insertId;
+
+        req.files.forEach(async image => {
+            const query = `
+                INSERT INTO imagens (foto, id_item)
+                VALUES (?, ?)
+            `;
+
+            const response = await db.query(query, [image.filename, itemId]);
+            console.log('Imagem inserida:', response);
+        });
 
         res.status(200).json({ message: 'Item cadastrado com sucesso!' });
     } catch (error) {
@@ -60,7 +130,7 @@ exports.addItem = async (req, res) => {
             return res.status(401).json({ message: 'Token expirado.' });
         }
 
-        res.status(500).json({ message: 'Erro ao cadastrar o item.' });
+        res.status(500).json({ message: 'Erro ao cadastrar o item.' + error.message });
     }
 };
 

@@ -174,45 +174,41 @@ const EditButton = styled.button`
 `;
 
 // Componente principal
-function Usuario(){
+function Usuario({user}){
     // Estados para armazenar os dados do usuário
-    const [userData, setUserData] = useState({
-      nomeCompleto: '',
-    email: '',
-    telefone: '',
-    dataNascimento: '',
-    cpf: '',
-    endereco: '',
-    senha: '',
-  });
+    const userData = user;
+    const [isContentVisible, setIsContentVisible] = useState(false);
 
-  const [isContentVisible, setIsContentVisible] = useState(false);
+    const toggleContentVisibility = () => {
+      setIsContentVisible(!isContentVisible);
+    };
 
-  const toggleContentVisibility = () => {
-    setIsContentVisible(!isContentVisible);
-  };
+    const userLogradouro = `${userData.logradouro}, ${userData.complemento}`
+    const userCidade = `${userData.cidade} - ${userData.uf}`
+    const userDataNasc = new Date(userData.data_nascimento_usuario)
 
-  return (
-    <Container>
-      <ProfileSection>
-        <UserHeader onClick={toggleContentVisibility}>
-          <ImagemEstilizada src={Logo} alt="Logo RepassEco" isOpen={isContentVisible} />
-          <User>Usuário</User>
-        </UserHeader>
-        
-        <Form isOpen={isContentVisible}>
-          <NOME value={userData.nomeCompleto} readOnly placeholder="Nome Completo" />
-          <TELEFONE value={userData.telefone} readOnly placeholder="Telefone" />
-          <EMAIL value={userData.email} readOnly placeholder="E-mail" />
-          <DATA value={userData.dataNascimento} readOnly placeholder="DD/MM/AA" />
-          <CPF value={userData.cpf} readOnly placeholder="CPF" />
-          <ENDERECO value={userData.endereco} readOnly placeholder="Endereço" />
-          <SENHA type="password" value={userData.senha} readOnly placeholder="Senha" />
-        </Form>
-        {isContentVisible && <EditButton>Editar</EditButton>}
-      </ProfileSection>
-    </Container>
-  );
+    return (
+      <Container>
+        <ProfileSection>
+          <UserHeader onClick={toggleContentVisibility}>
+            <ImagemEstilizada src={Logo} alt="Logo RepassEco" isOpen={isContentVisible} />
+            <User>Usuário</User>
+          </UserHeader>
+          
+          <Form isOpen={isContentVisible}>
+            <NOME value={userData.nome_usuario} readOnly placeholder="Nome Completo" />
+            <TELEFONE value={userData.telefone} readOnly placeholder="Telefone" />
+            <EMAIL value={userData.email_usuario} readOnly placeholder="E-mail" />
+            <DATA value={userDataNasc.toLocaleDateString('pt-BR')} readOnly placeholder="DD/MM/AA" />
+            <CPF value={userData.CPF} readOnly placeholder="CPF" />
+            <ENDERECO value={userLogradouro} readOnly placeholder="Endereço" />
+            <ENDERECO value={userData.bairro} readOnly placeholder="Endereço" />
+            <ENDERECO value={userCidade} readOnly placeholder="Endereço" />
+          </Form>
+          {/* {isContentVisible && <EditButton>Editar</EditButton>} */}
+        </ProfileSection>
+      </Container>
+    );
 }
 
 export default Usuario;

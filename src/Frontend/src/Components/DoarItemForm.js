@@ -2,22 +2,29 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useApiUrl } from "../context/ApiContext";
 
 const DoarItemForm = () => {
   const navigate = useNavigate();
+  const apiUrl = useApiUrl()
+  const [images, setImages] = useState([])
   const [formData, setFormData] = useState({
-    foto_item: "",
     descricao_item: "",
     nome_item: "",
     categoria_item: "",
     estado_uso_item: "",
     cpf: "", // Obter o CPF do usuário logado (JWT ou sessão)
+    images: images
   });
 
   const handleChange = (e) => {
     const { id, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [id]: value }));
   };
+
+  const handleImageChange = (event) => {
+    setImages([...images, ...event.target.files])
+};
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,14 +38,32 @@ const DoarItemForm = () => {
         const config = {
           headers: {
             Authorization: `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data'
           },
         };
 
+        const formDataToSend = new FormData(); // Cria um objeto FormData
+
+        // Adiciona os arquivos ao FormData
+        images.forEach((image) => {
+          formDataToSend.append("images", image);
+        });
+
+        // Adiciona os outros campos do formulário ao FormData
+        formDataToSend.append("descricao_item", formData.descricao_item);
+        formDataToSend.append("nome_item", formData.nome_item);
+        formDataToSend.append("categoria_item", formData.categoria_item);
+        formDataToSend.append("estado_uso_item", formData.estado_uso_item);
+        formDataToSend.append("cpf", formData.cpf);
+
+        console.log(formDataToSend.values)
+        alert(formDataToSend.values)
+
         // Fazer a requisição com o header Authorization
-        const response = await axios.post("http://localhost:5000/items/add", formData, config);
+        const response = await axios.post(`${apiUrl}/items/add`, formDataToSend, config);
 
         alert(response.data.message);
-        navigate("/home"); // Redirecionar para a home após doar
+        navigate("/"); // Redirecionar para a home após doar
       } else {
         // Lidar com o caso em que o usuário não está logado
         console.error("Usuário não autenticado.");
@@ -47,7 +72,7 @@ const DoarItemForm = () => {
 
     } catch (error) {
       console.error("Erro ao doar item:", error);
-      alert("Erro ao doar item. Tente novamente.");
+      alert("Erro ao doar item. Tente novamente." + error.name);
     }
   };
 
@@ -57,14 +82,14 @@ const DoarItemForm = () => {
         <FormContent>
           {/* Campos do formulário */}
           <FormField>
-            <Label htmlFor="foto_item">Foto do Item</Label>
+            <Label htmlFor="images">Foto do Item</Label>
             <InputBase
-              type="text"
-              id="foto_item"
+              type="file"
+              id="images"
               placeholder="URL da foto"
+              onChange={handleImageChange}
+              multiple
               required
-              value={formData.foto_item}
-              onChange={handleChange}
             />
           </FormField>
 

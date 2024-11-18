@@ -43,31 +43,15 @@ const UserName = styled.h2`
   text-align: center;
 `;
 
-function UserProfile(){
+function UserProfile({user}){
   const [nomeUsuario, setNomeUsuario] = useState('');
 
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-
-    if (token) {
-      axios.get('http://localhost:5000/users/nome', { // Rota para obter o nome do usuário
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then(response => {
-        setNomeUsuario(response.data.nome); // Define o nome do usuário no estado
-      })
-      .catch(error => {
-        console.error('Erro ao obter nome do usuário:', error);
-      });
-    }
-  }, []); // Executa o efeito apenas uma vez, quando o componente é montado
+  
 
   return (
     <Container>
       <WelcomeText>Seja bem-vindo,</WelcomeText>
-      <UserName>{nomeUsuario}!</UserName> 
+      <UserName>{user}!</UserName> 
     </Container>
   );
 };
