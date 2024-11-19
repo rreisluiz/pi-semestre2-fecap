@@ -51,9 +51,29 @@ const ImagePlaceholder = styled.img`
 
 const InfoContainer = styled.div`
   display: flex;
+  color: #2C5431;
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
+`;
+
+const ProductInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;
+
+const ProductID = styled.h4`
+  font-size: 20px;
+  margin: 0;
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 12px;
+  }
 `;
 
 const ProductName = styled.h4`
@@ -83,14 +103,14 @@ const ProductStatus = styled.h5`
 `;
 
 const ProductDescrition = styled.div`
-  font-size: 13px;
+  font-size: 16px;
   padding: 8px;
-  background: #2C5431;
-  color: rgba(255, 255, 255, 0.8);
+  color: #2C5431;
   border-radius: 8px;
+  border: 2px solid #2C5431;
   line-height: 1.5;
   margin: 8px 0;
-  height: 55px;
+  height: 80px;
   overflow-y: auto;
 
   @media (max-width: 768px) {
@@ -165,7 +185,7 @@ const FormEdit = styled.form`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 10px
+  gap: 5px
 `
 
 const InputEdit = styled.input`
@@ -186,6 +206,7 @@ const InputSelect = styled.select`
 
 const InputDescription = styled.textarea`
   width: 100%;
+  height: 80px;
   border-radius: 8px;
   background-color: rgba(217, 217, 217, 0.3);
   font-size: 16px;
@@ -260,7 +281,7 @@ const ProductCard = ({item}) => {
         {isEditing ? ( 
           // Formulário de edição
           <FormEdit>
-            <ProductName>ID: {item.id}</ProductName>
+            <ProductID>ID: {item.id}</ProductID>
             <InputEdit
               type="text"
               name="nome_item"
@@ -308,20 +329,19 @@ const ProductCard = ({item}) => {
           </FormEdit>
         ) : (
           // Visualização normal
-          <>
-            <ProductName>ID: {item.id}</ProductName>
+          <ProductInfo>
+            <ProductID>ID: {item.id}</ProductID>
             <ProductName>Nome: {item.nome_item}</ProductName>
-            <ProductStatus>{item.categoria_item}</ProductStatus>
-            <ProductStatus>{item.estado_uso_item}</ProductStatus>
+            <ProductStatus>Categoria: {item.categoria_item}</ProductStatus>
+            <ProductStatus>Estado: {item.estado_uso_item}</ProductStatus>
             <ProductDescrition>
-              <br />
               {item.descricao_item}
             </ProductDescrition>
             <ButtonContainer>
               <Button onClick={handleEditClick}>Editar</Button>
               <Button delete onClick={openModal}>Deletar</Button>
             </ButtonContainer>
-          </>
+          </ProductInfo>
         )}
         </InfoContainer>
         {/* Modal de confirmação */}

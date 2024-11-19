@@ -40,7 +40,7 @@ function PaginaUsuario(){
             <BemVindo user={userData.nome_usuario}/>
             <Usuario user={userData}/>
             <ProdutosCadastrados user={userData.CPF}/>
-            {/* <HistoricoProdutos user={userData.CPF}/> */}
+            <HistoricoProdutos user={userData.CPF}/>
             <Footer/>
         </div>
     )

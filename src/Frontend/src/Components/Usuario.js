@@ -202,8 +202,6 @@ function Usuario({user}){
             <ENDERECO value={userData.bairro} readOnly placeholder="Endereço" />
             <ENDERECO value={userCidade} readOnly placeholder="Endereço" />
           </Form>
-          {isContentVisible && <EditButton>Editar</EditButton>}
-          {/* {isContentVisible && <DeletarConta user={userData.CPF}/>} */}
         </ProfileSection>
       </Container>
     );

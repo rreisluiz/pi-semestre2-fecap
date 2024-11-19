@@ -26,7 +26,9 @@ exports.getAllItems = async (req, res) => {
 
 exports.getItemById = async (req, res) => {
     const itemId = req.params.id;
-    const query = `SELECT * FROM item WHERE id_item = ?;`;
+    const query = `SELECT * FROM item i 
+                    INNER JOIN usuario u on u.cpf = i.cpf 
+                    WHERE id_item = ?;`;
     const response = await db.query(query, [itemId]);
 
     const items = await Promise.all(response[0].map( async (item) => {
@@ -39,6 +41,12 @@ exports.getItemById = async (req, res) => {
             descricao_item: item.descricao_item,
             categoria_item: item.categoria_item,
             estado_uso_item: item.estado_uso_item,
+            nome_usuario: item.nome_usuario,
+            email_usuario: item.email_usuario,
+            telefone: item.telefone,
+            bairro: item.bairro,
+            cidade: item.cidade,
+            uf: item.uf,
             images: images
         }
     }));
@@ -89,7 +97,7 @@ exports.addItem = async (req, res) => {
         console.log('Token decodificado:', decoded);
 
         const cpf = decoded.id;
-        const { descricao_item, nome_item, categoria_item, estado_uso_item, images } = req.body;
+        const { descricao_item, nome_item, categoria_item, estado_uso_item } = req.body;
 
         if (!descricao_item || !nome_item || !categoria_item || !estado_uso_item) {
             return res.status(400).json({ message: 'Campos obrigatórios ausentes.' });

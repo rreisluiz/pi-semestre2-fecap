@@ -40,6 +40,12 @@ app.options('/items/add', cors({
     allowedHeaders: ['Content-Type', 'Authorization'] // Headers permitidos
 }));
 
+app.options('/interests/add', cors({
+    origin: 'http://localhost:3000', // Sua origem
+    methods: ['POST'], // Métodos permitidos
+    allowedHeaders: ['Content-Type', 'Authorization'] // Headers permitidos
+}));
+
 
 app.use('/items', itemRoutes);
 app.use('/interests', interestsRoutes);

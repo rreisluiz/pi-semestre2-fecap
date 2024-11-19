@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { GoogleMap, LoadScript, Marker, InfoWindow } from '@react-google-maps/api';
 
 const MapContainer = styled.div`
-
+  
 `;
 
 const containerStyle = {
@@ -25,7 +25,7 @@ function Map({pontosColeta}) {
 
     return (
         <MapContainer>
-          <LoadScript googleMapsApiKey={process.env.GOOGLE_MAPS_API_KEY}>
+          <LoadScript googleMapsApiKey='AIzaSyDJnwA0agCajwv4g3fRqFgjlTGMgUiykgQ'>
             <GoogleMap
               mapContainerStyle={containerStyle}
               center={center}

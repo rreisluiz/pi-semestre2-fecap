@@ -1,25 +1,25 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Seta from '../assets/icon_seta.png';
+import ProdutosInteresse from "../Components/ProdutosInteresse";
 
 const Container = styled.div`
-  margin-top: 100px; 
-  margin-left: -14px;
+  padding-top: 20px;
+  margin: 0 auto;
+  width: 80%;
 `;
 
 const TitleContainer = styled.div`
   display: flex;
   align-items: center;
   cursor: pointer;
-  margin: 80px 0 24px 80px;
 
-  /* Responsividade */
   @media (max-width: 768px) {
-    margin: 12px 0 16px 16px; 
+    margin-left: 40px;
   }
 
   @media (max-width: 480px) {
-    margin: 8px 0 12px 12px; 
+    margin-left: 20px;
   }
 `;
 
@@ -99,7 +99,7 @@ const Sub = styled.h3`
   }
 `;
 
-function HistoricoProdutos() {
+function HistoricoProdutos({user}) {
   const [isListVisible, setIsListVisible] = useState(false);
 
   const toggleListVisibility = () => {
@@ -113,8 +113,8 @@ function HistoricoProdutos() {
         <Title>Histórico de Produtos</Title>
       </TitleContainer>
       <Subtitulos isOpen={isListVisible}>
-        <Sub>Solicitados</Sub>
-        <Sub>Requeridos</Sub>
+        <ProdutosInteresse user={user}>Solicitados</ProdutosInteresse>
+        {/* <Sub>Requeridos</Sub> */}
       </Subtitulos>
     </Container>
   );

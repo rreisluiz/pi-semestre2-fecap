@@ -39,7 +39,7 @@ const FlexContainer = styled.div`
 const DescriptionWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-between; 
+  justify-content: space-around; 
   width: 100%; 
   min-height: 20em; 
   padding: 1em;
@@ -48,7 +48,7 @@ const DescriptionWrapper = styled.div`
 
 const Image = styled.img`
   width: 100%;
-  max-height: 40em;
+  max-height: 30em;
   object-fit: cover;
   border-radius: 20px;
   border-style: groove;
@@ -58,21 +58,53 @@ const TextContainer = styled.div`
   text-align: left;
 `;
 
-const Title = styled.h1`
+const DonatorContainer = styled.div`
+  text-align: center;
+  background-color: #2C5431;
+  border-radius: 8px;
+  color: #fff;
+  padding: 20px 0;
+`
+
+const ItemInfo = styled.h2`
   font-family:Arial, Helvetica, sans-serif;
   font-style:bold;
   color: #000;
-  font-size: 2rem;
+  font-size: 1.2rem;
 `;
 
+const DonatorInfo = styled.h2`
+  font-family:Arial, Helvetica, sans-serif;
+  font-style: bold;
+  color: #fff;
+  font-size: 1.2rem;
+`;
+
+const ItemTitle = styled.h1`
+  text-transform: uppercase;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #2C5431;
+  padding: 5px;
+  text-align: left;
+  border-radius: 8px;
+  color: #fff;
+  font-style: bold;
+  font-size: 1.5rem;
+`
+
 const Description = styled.p`
-  font-size: 13px;
+  font-size: 1.2em;
   font-family: Arial, Helvetica, sans-serif;
   color: black;
-  line-height: 1.5;
   word-wrap: break-word;
   overflow-wrap: break-word;
   hyphens: auto;
+  border-radius: 8px;
+  border: 2px solid #2C5431;
+  line-height: 1.5;
+  padding: 5px;
+  height: 80px;
+  overflow-y: auto;
 `;
 
 const InterestedButton = styled.button`
@@ -178,52 +210,6 @@ const AnimatedButton = styled.button`
   }
 `;
 
-// const productData = {
-//   1: {
-//     id: 1,
-//     title: '1º Item',
-//     description: 'Detalhes do 1º Item',
-//     images: [guitarra01, guitarra02, guitarra03],
-//   },
-//   2: {
-//     id: 2,
-//     title: 'Controle PS4',
-//     description: (
-//       <>
-//           Controle PS4 Usado - Excelente Estado! <br />
-//           Está procurando um controle de PS4 em ótimo estado e com preço acessível? Temos o que você precisa!<br />
-//           Nosso controle usado oferece toda a funcionalidade de um controle novo, com desempenho de alta qualidade.<br />
-//           Ele foi cuidadosamente verificado, garantindo que você tenha uma experiência de jogo incrível, sem comprometer seu bolso.
-//       </>
-//     ),
-//     images: [Controle01, Controle02, Controle03],
-//   },
-//   3: {
-//     id: 3,
-//     title: '3º Item',
-//     description:'Detalhes do 3º Item',
-//     images: [guitarra01, guitarra02, guitarra03],
-//   },
-//   4: {
-//     id: 4, 
-//     title: '4º Item',
-//     description: 'Detalhes do 4º Item',
-//     images: [guitarra01, guitarra02, guitarra03],
-//   },
-//   5: {
-//     id: 5, 
-//     title: '5º Item',
-//     description: 'Detalhes do 5º Item',
-//     images: [guitarra01, guitarra02, guitarra03],
-//   },
-//   6: {
-//     id: 6, 
-//     title: '6º Item',
-//     description: 'Detalhes do 6º Item',
-//     images: [guitarra01, guitarra02, guitarra03],
-//   },
-// };
-
 function Produto() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -274,6 +260,29 @@ function Produto() {
     navigate(-1);
   };
 
+  const handleInterest = async(item) => {
+    try {
+      const token = localStorage.getItem('token');
+
+      if (token) {
+        const config = {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
+        
+        const data = {
+          id_item: item.id
+        }
+
+        const response = await axios.post(`${apiUrl}/interests/add`, data, config);
+        alert(response.data.message)
+      }
+    }catch (error) {
+      alert('Erro ao criar interesse:', error);
+    }
+  }
+
   return (
     <div>
       <Navbar />
@@ -293,25 +302,31 @@ function Produto() {
           </ButtonContainer>
             {item ? (
           <FlexContainer>
-            {item.images && item.images.length > 0 ? (
-          <Image
-            src={`${apiUrl}/uploads/${item.images[activeImageIndex].foto}`} 
-            alt={`${item.nome_item} - Imagem ${activeImageIndex + 1}`}
-          />
-            ) : (
-            <Image
-            src='https://placehold.co/600x400/orange/white' 
-            />
-            )}
-          <DescriptionWrapper>
-            <TextContainer>
-              <Title><strong>{item.nome_item}</strong></Title>
-              <Title>Categoria: <strong>{item.categoria_item}</strong></Title>
-              <Title>Estado de uso: <strong>{item.estado_uso_item}</strong></Title>
-              <Description>{item.descricao_item}</Description>
-            </TextContainer>
-            <InterestedButton>Interessado?</InterestedButton>
-          </DescriptionWrapper>
+              {item.images && item.images.length > 0 ? (
+              <Image
+                src={`${apiUrl}/uploads/${item.images[activeImageIndex].foto}`} 
+                alt={`${item.nome_item} - Imagem ${activeImageIndex + 1}`}
+              />
+              ) : (
+                <Image
+                src='https://placehold.co/600x400/orange/white' 
+                />
+              )}
+            <DescriptionWrapper>
+              <TextContainer>
+                <ItemTitle><strong>{item.nome_item}</strong></ItemTitle>
+                <ItemInfo>Categoria: <strong>{item.categoria_item}</strong></ItemInfo>
+                <ItemInfo>Estado de uso: <strong>{item.estado_uso_item}</strong></ItemInfo>
+                <Description>{item.descricao_item}</Description>
+              </TextContainer>
+              <DonatorContainer>
+                <DonatorInfo><strong>{item.nome_usuario}</strong></DonatorInfo>
+                <DonatorInfo>{item.email_usuario}</DonatorInfo>
+                <DonatorInfo>{item.telefone}</DonatorInfo>
+                <DonatorInfo>{item.bairro} - {item.cidade}, {item.uf}</DonatorInfo>
+              </DonatorContainer>
+              <InterestedButton onClick={() => handleInterest(item)}>Interessado?</InterestedButton>
+            </DescriptionWrapper>
           </FlexContainer>
             ) : (
               <p>Produto não encontrado.</p>  

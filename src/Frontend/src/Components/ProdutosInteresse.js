@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import ProductCard from "./ProductCard";
+import ProductInterestCard from "./ProductInterestCard";
 import Seta from '../assets/icon_seta.png';
 import { useApiUrl } from "../context/ApiContext";
 import axios from 'axios'
@@ -9,12 +9,13 @@ import axios from 'axios'
 const Container = styled.div`
   padding-top: 20px;
   margin: 0 auto;
-  width: 80%;
+  width: 100%;
 `;
 
 const ProductListContainer = styled.div`
   display: ${(props) => (props.isOpen ? "flex" : "none")};
   flex-wrap: wrap;
+  flex-direction: column;
   gap: 30px;
   justify-content: space-around;
 
@@ -83,26 +84,7 @@ const Title = styled.h2`
   }
 `;
 
-const Subtitulos = styled.section`
-  margin: 16px 32px;
-  padding: 16px;
-  border-left: 4px solid #2C5431;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  display: ${(props) => (props.isOpen ? "block" : "none")}; /* Condicional para exibir/ocultar */
-
-  @media (max-width: 768px) {
-    margin: 12px 16px;
-    padding: 12px;
-  }
-
-  @media (max-width: 480px) {
-    margin: 8px 12px;
-    padding: 8px;
-  }
-`;
-
-function ProductList({user}) {
+function ProdutosInteresse({user}) {
   const [isListVisible, setIsListVisible] = useState(false);
   const [userItems, setUserItems] = useState([]);
   const apiUrl = useApiUrl();
@@ -112,7 +94,7 @@ function ProductList({user}) {
         const token = localStorage.getItem('token');
     
         if (token) {
-          axios.get(`${apiUrl}/items/cpf/${user}`, { // Rota para obter o nome do usuário
+          axios.get(`${apiUrl}/interests/${user}`, { // Rota para obter o nome do usuário
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -136,17 +118,15 @@ function ProductList({user}) {
     <Container>
       <TitleContainer onClick={toggleListVisibility}>
         <ImagemEstilizada src={Seta} alt="Seta" isOpen={isListVisible} />
-        <Title>Produtos Cadastrados</Title>
+        <Title>Produtos de Interesse</Title>
       </TitleContainer>
-      <Subtitulos isOpen={isListVisible}>
-        <ProductListContainer isOpen={isListVisible}>
-          {userItems.map((userItem, itemIndex) => (
-            <ProductCard key={itemIndex} item={userItem}/>
-          ))}
-        </ProductListContainer>
-      </Subtitulos>
+      <ProductListContainer isOpen={isListVisible}>
+        {userItems.map((userItem, itemIndex) => (
+          <ProductInterestCard key={itemIndex} item={userItem}/>
+        ))}
+      </ProductListContainer>
     </Container>
   );
 }
 
-export default ProductList;
+export default ProdutosInteresse;

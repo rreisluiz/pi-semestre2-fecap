@@ -54,5 +54,3 @@ constraint PKpossuir primary key(id_possuir),
 constraint FKinteresse foreign key(id_interesse) references interesse(id_interesse),
 constraint FKitem foreign key(id_item) references item(id_item)
 );
-
-drop database repasseco;
