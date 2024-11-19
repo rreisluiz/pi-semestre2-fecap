@@ -1,10 +1,10 @@
 import React from "react";
 import ProductList from './ProductList'
 
-function ProdutosCadastrados() {
+function ProdutosCadastrados({user}) {
     return (
       <div>
-        <ProductList />
+        <ProductList user={user}/>
       </div>
     );
   }

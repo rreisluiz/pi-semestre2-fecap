@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import { useApiUrl } from '../context/ApiContext';
 
 const Container = styled.div`
   max-width: 77em;
   margin: 7em auto;
   padding: 20px;
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* Alterado para 4 colunas por linha */
+  grid-template-columns: repeat(4, 1fr);
   gap: 6em 4em; 
   overflow-y: auto;
   `;
-
 
 const Card = styled.div`
   display: flex;
@@ -28,9 +28,9 @@ const ImageContainer = styled.div`
   height: 250px;
   position: relative;
   overflow: hidden;
-  margin-bottom: 40px; /* Adicione esta linha */
+  margin-bottom: 40px;
   border-radius:8px;
-  `;
+`;
 
 
 const CarouselWrapper = styled.div`
@@ -69,7 +69,7 @@ const Description = styled.h2`
   width: 100%; 
   max-width: 90%; 
   flex-shrink: 1; 
-  `;
+`;
 
 
 const Button = styled.button`
@@ -141,6 +141,7 @@ const ArrowButton = styled.button`
 
 function DivProdutos({ images }) {
   const navigate = useNavigate();
+  const apiUrl = useApiUrl();
 
   const [activeImageIndexes, setActiveImageIndexes] = useState(
     images.map(() => 0)
@@ -161,24 +162,29 @@ function DivProdutos({ images }) {
     return () => intervals.forEach(clearInterval);
   }, [images]);
 
+  useEffect(() => {
+    setActiveImageIndexes(images.map(() => 0));
+  }, [images]);
+
   return (
     <Container>
-      {images.map((product, productIndex) => (
-        <Card key={product.id}>
+      {images.map((item, productIndex) => (
+        <Card key={item.id}>
           <ImageContainer>
+          {item.images && item.images.length > 0 ? ( // Renderização condicional
             <CarouselWrapper>
               <div
-                id={`carousel${product.id}`}
+                id={`carousel${item.id}`}
                 className="carousel slide"
                 data-bs-ride="false"
               >
                 <div className="carousel-inner">
-                  {product.images.map((image, imgIndex) => (
+                  {item.images.map((image, imgIndex) => (
                     <div
                       className={`carousel-item ${imgIndex === activeImageIndexes[productIndex] ? 'active' : ''}`}
                       key={imgIndex}
                     >
-                      <Image src={image} alt={`Produto ${product.id} - Imagem ${imgIndex + 1}`} />
+                      <Image src={`${apiUrl}/uploads/${image.foto}`} alt={`Produto ${item.id} - Imagem ${imgIndex + 1}`} />
                     </div>
                   ))}
                 </div>
@@ -190,8 +196,8 @@ function DivProdutos({ images }) {
                     setActiveImageIndexes((prevIndexes) => {
                       const newIndexes = [...prevIndexes];
                       newIndexes[productIndex] =
-                        (newIndexes[productIndex] - 1 + product.images.length) %
-                        product.images.length;
+                        (newIndexes[productIndex] - 1 + item.images.length) %
+                        item.images.length;
                       return newIndexes;
                     })
                   }
@@ -206,26 +212,29 @@ function DivProdutos({ images }) {
                     setActiveImageIndexes((prevIndexes) => {
                       const newIndexes = [...prevIndexes];
                       newIndexes[productIndex] =
-                        (newIndexes[productIndex] + 1) % product.images.length;
+                        (newIndexes[productIndex] + 1) % item.images.length;
                       return newIndexes;
                     })
                   }
                 >
-                  <span className="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span className="carousel-control-next-icon" aria-hidden="true"></span> 
                 </ArrowButton>
               </div>
             </CarouselWrapper>
+          ) : (
+            <p>Carregando imagens...</p>
+          )}
 
             {/* Trilha de bolinhas */}
             <Trail>
-              {product.images.map((_, imgIndex) => (
+              {item.images.map((_, imgIndex) => (
                 <TrailDot key={imgIndex} active={imgIndex === activeImageIndexes[productIndex]} />
               ))}
             </Trail>
           </ImageContainer>
 
-          <Title>{product.title}</Title>
-          <Button onClick={() => navigate(`/item/${product.id}`)}>
+          <Title>{item.nome_item}</Title>
+          <Button onClick={() => navigate(`/item/${item.id}`)}>
             Saiba Mais
           </Button>
         </Card>

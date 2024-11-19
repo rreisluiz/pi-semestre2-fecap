@@ -9,11 +9,12 @@ import Produto from './pages/Produto';
 import PaginaUsuario from "./pages/PaginaUsuario";
 import DoarItemPage from './pages/DoarItemPage';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { ApiProvider } from './context/ApiContext';
 import Siganos from './pages/Siganos';
 
 function App() {
   return (
-    <div>
+    <ApiProvider>
       <Router>
         <Routes>
           <Route path='/' element={<Home />} />
@@ -29,7 +30,7 @@ function App() {
           <Route path='/siga-nos' element={<Siganos />} />
         </Routes>
       </Router>
-    </div>
+    </ApiProvider>
   );
 }
 
