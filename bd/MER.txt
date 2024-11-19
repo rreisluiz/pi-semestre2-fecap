@@ -1,9 +1,11 @@
 MER:
-Usuário
-Atributos: CPF, Nome, E-mail, Telefone, Endereço, Data_nascimento, Senha
-Item
-Atributos: ID_item, Nome_item, Descrição, Estado_uso, Foto, Categoria, ID_usuario (FK)
-Doação
-Atributos: ID_doacao, Data_doacao, ID_item (FK), ID_usuario_doador (FK), ID_usuario_receptor (FK)
-Interesse
-Atributos: ID_interesse, ID_item (FK), ID_usuario (FK), Data_interesse
+Tabela: Usuário
+Atributos: CPF (PK), Nome, E-mail, Telefone, Logradouro, Data de Nascimento, Senha, Complemento, Bairro, UF, Cidade.
+Tabela: Item
+Atributos: ID_item (PK), Nome_item, Descrição, Estado_uso, Categoria, CPF (FK).
+Tabela: imagem
+Atributos: ID_foto (PK), foto, ID_item (FK).
+Tabela: Interesse
+Atributos: ID_interesse (PK), Data_interesse, ID_item (FK), CPF (FK).
+Tabela: Possuir
+Atributos: ID_possuir (PK), Data_possuir, ID_item (FK), ID_interesse (FK)
