@@ -286,6 +286,7 @@ function Produto() {
   return (
     <div>
       <Navbar />
+      
       <Container>
         <ItemContainer>
           <ButtonContainer>

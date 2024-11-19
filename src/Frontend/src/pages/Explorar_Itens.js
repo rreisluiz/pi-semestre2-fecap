@@ -1,9 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from "../Components/Navbar";
 import Footer from '../Components/Footer';
+import styled from 'styled-components';
 import DivProdutos from '../Components/DivProdutos';
 import axios from 'axios';
 import { useApiUrl } from '../context/ApiContext';
+
+const Title = styled.h1`
+  font-size: 3em;
+  text-align: center;
+  background-color: #2C5431;
+  color: #fff;
+  padding: 20px 50px;
+`;
 
 function Explorar_Itens() {
   // Lista de itens com suas respectivas imagens, descrições e títulos
@@ -53,6 +62,7 @@ function Explorar_Itens() {
   return (
     <div>
       <Navbar />
+      <Title>Explorar Itens</Title>
       <DivProdutos images={updatedItems} />
       <Footer />
     </div>

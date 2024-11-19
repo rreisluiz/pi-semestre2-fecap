@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { GoogleMap, LoadScript, Marker, InfoWindow } from '@react-google-maps/api';
 
 const MapContainer = styled.div`
-  
+  border: 5px solid #2C5431;
 `;
 
 const containerStyle = {

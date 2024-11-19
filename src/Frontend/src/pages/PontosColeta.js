@@ -7,7 +7,11 @@ import PontosColetaMap from "../Components/PontosColetaMap.js";
 
 const Title = styled.h1`
   font-size: 3em;
-  padding-left: 50px;
+  text-align: center;
+  background-color: #2C5431;
+  color: #fff;
+  padding: 20px 50px;
+  margin: 0;
 `;
 
 function PontosColeta() {

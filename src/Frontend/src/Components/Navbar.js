@@ -254,7 +254,7 @@ function NavBar() {
         <Spacer /> 
         <MenuItem to="/" active={location.pathname === "/"}>Home</MenuItem>
         <Spacer /> 
-        <MenuItem to="/explorar_itens" active={location.pathname === "/explorar_itens"}>Produto</MenuItem>
+        <MenuItem to="/explorar_itens" active={location.pathname === "/explorar_itens"}>Explorar Itens</MenuItem>
         <Spacer /> 
         <MenuItem to="/pontos-coleta" active={location.pathname === "/pontos-coleta"}>Pontos de Coleta</MenuItem>
         <Spacer /> 

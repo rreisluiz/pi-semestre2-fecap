@@ -15,20 +15,13 @@ const Container = styled.div`
   padding: 20px;
 `;
 
-const Title = styled.h1`
-  color: #000;
-  text-decoration: underline;
-  margin-bottom: 40px;
-  font-family: 'Inter';
-  font-style: italic;
-`;
-
 // Grid que organiza os cartões dos integrantes em duas colunas
 const Grid = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 20px;
   width: 100%;
+  margin-top: 60px;
   max-width: 900px;
 `;
 
@@ -127,7 +120,6 @@ const Integrantes = () => {
 
   return (
     <Container>
-      <Title>Equipe</Title>
       <Grid>
         {teamMembers.map((member, index) => (
           <Card key={index}> {/* Cria um cartão para cada integrante */}
